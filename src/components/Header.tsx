@@ -51,8 +51,8 @@ export default function Header({ language, setLanguage, theme, setTheme, copy }:
         >
           <span className="theme-icon" aria-hidden="true">{theme === 'light' ? '☾' : '☀'}</span>
         </button>
-        <button className="language-switch" onClick={() => setLanguage(language === 'ar' ? 'en' : 'ar')} aria-label={copy.language}>
-          <span className={language === 'ar' ? 'active' : ''}>ع</span><i /><span className={language === 'en' ? 'active' : ''}>EN</span>
+        <button className="language-switch" type="button" onClick={() => setLanguage(language === 'ar' ? 'en' : 'ar')} aria-label={copy.language} title={copy.language}>
+          <span aria-hidden="true">{language === 'ar' ? 'EN' : 'AR'}</span>
         </button>
         <button className="menu-button" onClick={() => setOpen(true)} aria-expanded={open} aria-label={copy.menu}>
           <span /><span />
