@@ -9,8 +9,13 @@ import Transport from './components/Transport';
 import DiscoverSaudi from './components/DiscoverSaudi';
 import TripPlanner from './components/TripPlanner';
 import WhatsAppButton from './components/WhatsAppButton';
+import { lazy, Suspense } from 'react';
+import { Navigate, Route, Routes } from 'react-router';
 
-export default function App() {
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const DashboardPage = lazy(() => import('./pages/DashboardPage'));
+
+function MarketingSite() {
   const [language, setLanguage] = useState<Language>('ar');
   const [theme, setTheme] = useState<Theme>(() => {
     const savedTheme = window.localStorage.getItem('alkutbi-theme');
@@ -45,7 +50,7 @@ export default function App() {
     <div className="page-shell">
       <Header language={language} setLanguage={setLanguage} theme={theme} setTheme={setTheme} copy={copy} />
       <main>
-        <Hero copy={copy.hero} />
+        <Hero copy={copy.hero} language={language} />
         <Services copy={copy.services} />
         <Transport copy={copy.transport} />
         <DiscoverSaudi key={`discover-${language}`} copy={copy.discover} />
@@ -54,5 +59,19 @@ export default function App() {
       <WhatsAppButton label={copy.whatsapp} />
       <Footer copy={copy.footer} nav={copy.nav} brand={copy.brand} />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <Suspense fallback={<div className="route-loader">Loading…</div>}>
+      <Routes>
+        <Route path="/" element={<MarketingSite />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/dashborad" element={<Navigate to="/dashboard" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </Suspense>
   );
 }

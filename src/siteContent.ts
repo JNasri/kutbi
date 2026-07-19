@@ -37,6 +37,26 @@ export const content = {
     },
     planner: {
       kicker: 'مصمم الرحلات', title: 'صمّم رحلتك', subtitle: 'خمس خطوات بسيطة تساعد فريقنا على فهم رحلتك وتجهيز العرض المناسب لك.',
+      modePackages: 'اختر باقتك', modeCustom: 'صمّم رحلتك الخاصة',
+      packagesTitle: 'باقات مصممة لكل أسلوب سفر', packagesSubtitle: 'اختر مستوى الخدمة المناسب، وسيتواصل معك فريقنا لتخصيص التفاصيل والسعر.',
+      packages: [
+        { id: 'economy', name: 'الاقتصادية', label: 'عملية ومريحة', description: 'الأساسيات التي تحتاجها لرحلة منظمة ومريحة بقيمة ذكية.', features: ['إقامة مختارة بعناية', 'تنقلات جماعية منظمة', 'دعم أساسي طوال الرحلة'], cta: 'اختر الاقتصادية' },
+        { id: 'special', name: 'المميزة', label: 'الأكثر اختياراً', description: 'توازن مثالي بين الراحة والمرونة والتجارب المختارة.', features: ['إقامة من فئة راقية', 'تنقلات خاصة أو للمجموعات', 'مزارات وتجارب بإرشاد محلي'], cta: 'اختر المميزة', featured: true },
+        { id: 'luxury', name: 'الفاخرة', label: 'تجربة استثنائية', description: 'خدمة راقية وخصوصية عالية في كل تفصيل من تفاصيل الرحلة.', features: ['إقامة خمس نجوم', 'مركبة فاخرة وسائق خاص', 'خدمة كونسيرج وأولوية متابعة'], cta: 'اختر الفاخرة' },
+      ],
+      packageNote: 'سيتم إرسال اختيارك إلى فريقنا لإعداد عرض مخصص حسب عدد المسافرين والتواريخ.',
+      packageModal: {
+        eyebrow: 'تفاصيل الباقة', included: 'تشمل الباقة', details: 'تفاصيل إضافية',
+        formTitle: 'اطلب عرضاً مخصصاً', formDescription: 'شارك بيانات التواصل وسيتواصل معك فريقنا لتأكيد التفاصيل والسعر.',
+        company: 'اسم الشركة', phone: 'رقم الهاتف', email: 'البريد الإلكتروني', notes: 'ملاحظات',
+        notesPlaceholder: 'التواريخ المتوقعة، عدد المسافرين، أو أي طلبات خاصة…', send: 'إرسال الطلب', close: 'إغلاق تفاصيل الباقة',
+        detailLabels: ['المدة المقترحة', 'مستوى الدعم', 'مرونة البرنامج'],
+        detailValues: {
+          economy: ['من 5 إلى 7 ليالٍ', 'دعم أساسي', 'برنامج محدد مسبقاً'],
+          special: ['من 7 إلى 10 ليالٍ', 'منسق رحلة مخصص', 'برنامج مرن'],
+          luxury: ['مدة مصممة حسب الطلب', 'خدمة كونسيرج على مدار الساعة', 'مرونة كاملة'],
+        },
+      },
       steps: [
         { number: '١', label: 'عدد الأفراد', field: 'people', type: 'number', placeholder: 'مثال: 4' },
         { number: '٢', label: 'أيام الإقامة', field: 'days', type: 'number', placeholder: 'مثال: 7' },
@@ -84,6 +104,26 @@ export const content = {
     },
     planner: {
       kicker: 'Trip designer', title: 'Make your trip', subtitle: 'Five simple steps help our team understand your journey and prepare the right proposal.',
+      modePackages: 'Choose your package', modeCustom: 'Custom design your trip',
+      packagesTitle: 'A package for every way of travelling', packagesSubtitle: 'Choose your preferred service level and our team will tailor the details and quotation.',
+      packages: [
+        { id: 'economy', name: 'Economy', label: 'Smart essentials', description: 'Everything needed for a comfortable, well-organized journey at thoughtful value.', features: ['Carefully selected accommodation', 'Organized shared transport', 'Essential trip support'], cta: 'Choose Economy' },
+        { id: 'special', name: 'Special', label: 'Most popular', description: 'A balanced combination of comfort, flexibility, and curated experiences.', features: ['Premium accommodation', 'Private or group transport', 'Locally guided visits'], cta: 'Choose Special', featured: true },
+        { id: 'luxury', name: 'Luxurious', label: 'Signature experience', description: 'Exceptional service and elevated privacy throughout every part of the journey.', features: ['Five-star accommodation', 'Luxury vehicle and private driver', 'Concierge and priority support'], cta: 'Choose Luxurious' },
+      ],
+      packageNote: 'Your selection will be sent to our team for a quotation based on travel dates and group size.',
+      packageModal: {
+        eyebrow: 'Package details', included: 'What is included', details: 'Additional details',
+        formTitle: 'Request a tailored quotation', formDescription: 'Share your contact details and our team will confirm availability, details, and pricing.',
+        company: 'Company name', phone: 'Phone number', email: 'Email address', notes: 'Notes',
+        notesPlaceholder: 'Expected dates, number of travellers, or any special requests…', send: 'Send inquiry', close: 'Close package details',
+        detailLabels: ['Suggested duration', 'Support level', 'Itinerary flexibility'],
+        detailValues: {
+          economy: ['5–7 nights', 'Essential support', 'Pre-arranged itinerary'],
+          special: ['7–10 nights', 'Dedicated trip coordinator', 'Flexible itinerary'],
+          luxury: ['Tailored duration', '24/7 concierge service', 'Fully flexible'],
+        },
+      },
       steps: [
         { number: '1', label: 'Number of guests', field: 'people', type: 'number', placeholder: 'Example: 4' },
         { number: '2', label: 'Length of stay', field: 'days', type: 'number', placeholder: 'Example: 7' },
