@@ -18,6 +18,7 @@ const PgSession = connectPgSimple(session);
 
 app.set('trust proxy', 1);
 app.use(helmet({
+  xFrameOptions: false,
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
@@ -26,6 +27,7 @@ app.use(helmet({
       fontSrc: ["'self'", 'https://fonts.gstatic.com'],
       imgSrc: ["'self'", 'data:', 'https:'],
       connectSrc: ["'self'"],
+      frameAncestors: null,
     },
   },
 }));
