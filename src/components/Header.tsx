@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { LuLockKeyhole } from 'react-icons/lu';
 import type { Language } from '../siteContent';
 import Logo from './Logo';
 
 export type Theme = 'light' | 'dark';
 
 type HeaderCopy = {
-  brand: string; brandEn: string; menu: string; close: string; language: string;
+  brand: string; brandEn: string; menu: string; close: string; language: string; portal: string;
   nav: readonly { label: string; href: string }[];
 };
+
+const employeePortalUrl = 'https://alkutbigroup.click';
 
 type HeaderProps = {
   language: Language;
@@ -77,6 +80,9 @@ export default function Header({ language, setLanguage, theme, setTheme, copy }:
               <small>0{index + 1}</small><span>{item.label}</span><b>↗</b>
             </a>
           ))}
+          <a className="mobile-portal-link" href={employeePortalUrl} target="_blank" rel="noopener noreferrer">
+            <small>06</small><span>{copy.portal}</span><LuLockKeyhole aria-hidden="true" focusable="false" />
+          </a>
         </nav>
       </div>
 
@@ -97,6 +103,10 @@ export default function Header({ language, setLanguage, theme, setTheme, copy }:
       </nav>
 
       <div className="header-actions">
+        <a className="employee-portal" href={employeePortalUrl} target="_blank" rel="noopener noreferrer" aria-label={copy.portal} title={copy.portal}>
+          <LuLockKeyhole aria-hidden="true" focusable="false" />
+          <span className="employee-portal-label">{copy.portal}</span>
+        </a>
         <button className="theme-switch" type="button" onClick={toggleTheme} aria-label={themeLabel} title={themeLabel}><span className="theme-icon" aria-hidden="true">{theme === 'light' ? '◐' : '◑'}</span></button>
         <button className="language-switch" type="button" onClick={toggleLanguage} aria-label={copy.language} title={copy.language}><span aria-hidden="true">{language === 'ar' ? 'EN' : 'AR'}</span></button>
         <button className="menu-button" type="button" onClick={() => setOpen(true)} aria-expanded={open} aria-label={copy.menu}><span /><span /></button>

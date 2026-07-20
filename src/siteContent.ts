@@ -2,7 +2,7 @@ export type Language = 'ar' | 'en';
 
 export const content = {
   ar: {
-    brand: 'مجموعة الكتبي', brandEn: 'ALKUTBI GROUP', menu: 'القائمة', close: 'إغلاق', language: 'تغيير اللغة',
+    brand: 'مجموعة الكتبي', brandEn: 'ALKUTBI GROUP', menu: 'القائمة', close: 'إغلاق', language: 'تغيير اللغة', portal: 'بوابة الموظفين',
     nav: [
       { label: 'الرئيسية', href: '#home' }, { label: 'خدماتنا', href: '#services' }, { label: 'النقل', href: '#transport' },
       { label: 'اكتشف السعودية', href: '#discover' }, { label: 'صمّم رحلتك', href: '#trip-planner' },
@@ -69,7 +69,7 @@ export const content = {
     footer: { statement: 'رحلتك إلى المملكة، نصنعها بعناية.', explore: 'استكشف', contact: 'تواصل', email: 'info@alkutbigroup.com', location: 'المملكة العربية السعودية', rights: 'جميع الحقوق محفوظة.' },
   },
   en: {
-    brand: 'Alkutbi Group', brandEn: 'ALKUTBI GROUP', menu: 'Menu', close: 'Close', language: 'Change language',
+    brand: 'Alkutbi Group', brandEn: 'ALKUTBI GROUP', menu: 'Menu', close: 'Close', language: 'Change language', portal: 'Employee Portal',
     nav: [
       { label: 'Home', href: '#home' }, { label: 'Services', href: '#services' }, { label: 'Transport', href: '#transport' },
       { label: 'Discover Saudi', href: '#discover' }, { label: 'Plan your trip', href: '#trip-planner' },
