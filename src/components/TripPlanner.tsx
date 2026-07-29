@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 type TripStep = { number: string; label: string; field: string; type: string; placeholder?: string; options?: readonly string[] };
 type PackageCopy = { id: string; name: string; label: string; description: string; features: readonly string[]; cta: string; featured?: boolean };
 type PlannerCopy = {
-  kicker: string; title: string; subtitle: string;
+  kicker: string; title: string; subtitle: string; packagesKicker: string;
   modePackages: string; modeCustom: string; packagesTitle: string; packagesSubtitle: string;
   packages: readonly PackageCopy[]; packageNote: string;
   packageModal: {
@@ -15,7 +15,7 @@ type PlannerCopy = {
   steps: readonly TripStep[]; submit: string; note: string; ready: string;
 };
 type FormValues = Record<string, string>;
-type PlannerMode = 'packages' | 'custom';
+export type PlannerMode = 'packages' | 'custom';
 
 export const whatsappNumber = (import.meta.env.VITE_WHATSAPP_NUMBER as string | undefined)?.replace(/\D/g, '') ?? '';
 
@@ -23,8 +23,7 @@ function openWhatsApp(summary: string) {
   window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(summary)}`, '_blank', 'noopener,noreferrer');
 }
 
-export default function TripPlanner({ copy }: { copy: PlannerCopy }) {
-  const [mode, setMode] = useState<PlannerMode>('packages');
+export default function TripPlanner({ copy, mode, onModeChange }: { copy: PlannerCopy; mode: PlannerMode; onModeChange: (mode: PlannerMode) => void }) {
   const [values, setValues] = useState<FormValues>({});
   const [selectedPackage, setSelectedPackage] = useState('');
   const [status, setStatus] = useState('');
@@ -81,12 +80,16 @@ export default function TripPlanner({ copy }: { copy: PlannerCopy }) {
   };
 
   const changeMode = (nextMode: PlannerMode) => {
-    setMode(nextMode);
+    onModeChange(nextMode);
     setStatus('');
   };
 
   return <section id="trip-planner" className="content-section planner-section">
-    <div className="section-heading content-wrap"><p>{copy.kicker}</p><h2>{copy.title}</h2><span>{copy.subtitle}</span></div>
+    <div className="section-heading content-wrap">
+      <p>{mode === 'packages' ? copy.packagesKicker : copy.kicker}</p>
+      <h2>{mode === 'packages' ? copy.packagesTitle : copy.title}</h2>
+      <span>{mode === 'packages' ? copy.packagesSubtitle : copy.subtitle}</span>
+    </div>
 
     <div className="planner-switch content-wrap" role="tablist" aria-label={copy.title}>
       <button type="button" role="tab" aria-selected={mode === 'packages'} className={mode === 'packages' ? 'active' : ''} onClick={() => changeMode('packages')}><span>01</span>{copy.modePackages}</button>
@@ -94,7 +97,6 @@ export default function TripPlanner({ copy }: { copy: PlannerCopy }) {
     </div>
 
     {mode === 'packages' ? <div className="planner-mode-panel package-panel content-wrap" role="tabpanel">
-      <div className="package-heading"><h3>{copy.packagesTitle}</h3><p>{copy.packagesSubtitle}</p></div>
       <div className="package-grid">{copy.packages.map((packageItem, index) => <article className={`package-card ${packageItem.featured ? 'featured' : ''} ${selectedPackage === packageItem.id ? 'selected' : ''}`} key={packageItem.id}>
         {packageItem.featured ? <span className="package-ribbon">{packageItem.label}</span> : null}
         <div className="package-card-top"><small>0{index + 1}</small><span>{packageItem.featured ? '◆' : '◇'}</span></div>

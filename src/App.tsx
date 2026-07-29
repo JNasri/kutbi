@@ -5,9 +5,13 @@ import type { Theme } from './components/Header';
 import Hero from './components/Hero';
 import Footer from './components/Footer';
 import Services from './components/Services';
+import UmrahVisa from './components/UmrahVisa';
 import Transport from './components/Transport';
+import SeasonalOffers from './components/SeasonalOffers';
 import DiscoverSaudi from './components/DiscoverSaudi';
 import TripPlanner from './components/TripPlanner';
+import TestimonialsContact from './components/TestimonialsContact';
+import type { PlannerMode } from './components/TripPlanner';
 import WhatsAppButton from './components/WhatsAppButton';
 import { lazy, Suspense } from 'react';
 import { Navigate, Route, Routes } from 'react-router';
@@ -21,6 +25,7 @@ function MarketingSite() {
     const savedTheme = window.localStorage.getItem('alkutbi-theme');
     return savedTheme === 'dark' ? 'dark' : 'light';
   });
+  const [plannerMode, setPlannerMode] = useState<PlannerMode>('packages');
   const copy = content[language];
 
   useEffect(() => {
@@ -50,11 +55,14 @@ function MarketingSite() {
     <div className="page-shell">
       <Header language={language} setLanguage={setLanguage} theme={theme} setTheme={setTheme} copy={copy} />
       <main>
-        <Hero copy={copy.hero} language={language} />
+        <Hero copy={copy.hero} language={language} onSelectPlannerMode={setPlannerMode} />
         <Services copy={copy.services} />
+        <UmrahVisa copy={copy.visa} />
+        <TripPlanner key={`planner-${language}`} copy={copy.planner} mode={plannerMode} onModeChange={setPlannerMode} />
         <Transport copy={copy.transport} />
+        <SeasonalOffers copy={copy.offers} />
         <DiscoverSaudi key={`discover-${language}`} copy={copy.discover} />
-        <TripPlanner key={`planner-${language}`} copy={copy.planner} />
+        <TestimonialsContact copy={copy.testimonialsContact} />
       </main>
       <WhatsAppButton label={copy.whatsapp} />
       <Footer copy={copy.footer} nav={copy.nav} brand={copy.brand} />

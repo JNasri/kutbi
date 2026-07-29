@@ -81,7 +81,7 @@ export default function Header({ language, setLanguage, theme, setTheme, copy }:
             </a>
           ))}
           <a className="mobile-portal-link" href={employeePortalUrl} target="_blank" rel="noopener noreferrer">
-            <small>06</small><span>{copy.portal}</span><LuLockKeyhole aria-hidden="true" focusable="false" />
+            <small>{String(copy.nav.length + 1).padStart(2, '0')}</small><span>{copy.portal}</span><LuLockKeyhole aria-hidden="true" focusable="false" />
           </a>
         </nav>
       </div>

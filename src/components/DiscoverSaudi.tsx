@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 type Destination = { name: string; index: number };
-type Category = { id: string; label: string; items: readonly Destination[] };
+type Category = { id: string; label: string; description: string; items: readonly Destination[] };
 type DiscoverCopy = { kicker: string; title: string; subtitle: string; categories: readonly Category[]; add: string; added: string };
 
 const atlasPosition = (index: number) => `${(index % 4) * (100 / 3)}% ${Math.floor(index / 4) * 50}%`;
@@ -21,6 +21,7 @@ export default function DiscoverSaudi({ copy }: { copy: DiscoverCopy }) {
     <div className="section-heading content-wrap"><p>{copy.kicker}</p><h2>{copy.title}</h2><span>{copy.subtitle}</span></div>
     <div className="discover-shell content-wrap">
       <div className="category-tabs" role="tablist" aria-label={copy.title}>{copy.categories.map((category) => <button key={category.id} type="button" role="tab" aria-selected={category.id === active.id} className={category.id === active.id ? 'active' : ''} onClick={() => setActiveId(category.id)}>{category.label}</button>)}</div>
+      <p className="discover-category-intro">{active.description}</p>
       <div className="destination-grid">{active.items.map((item) => {
         const isSelected = selected.has(item.name);
         return <article className="destination-card" key={item.name}>
