@@ -9,14 +9,10 @@ export const content = {
     language: "تغيير اللغة",
     portal: "بوابة الموظفين",
     nav: [
-      { label: "الرئيسية", href: "#home" },
-      { label: "خدماتنا", href: "#services" },
-      { label: "تأشيرة العمرة", href: "#umrah-visa" },
-      { label: "الباقات", href: "#trip-planner" },
-      { label: "أسطولنا", href: "#transport" },
-      { label: "العروض", href: "#offers" },
-      { label: "اكتشف السعودية", href: "#discover" },
-      { label: "آراء ضيوفنا", href: "#contact" },
+      { label: "الرئيسية", href: "/" },
+      { label: "خدماتنا", href: "/services" },
+      { label: "صمّم رحلتك", href: "/trips" },
+      { label: "تواصل معنا", href: "/contact" },
     ],
     hero: {
       eyebrow: "رحلة روحانية وثقافية متكاملة",
@@ -27,28 +23,40 @@ export const content = {
       secondary: "اصنع رحلتك بنفسك",
       scroll: "مرّر للاستكشاف",
     },
+    about: {
+      kicker: "مجموعة الكتبي · المملكة العربية السعودية",
+      title: "من نحن",
+      eyebrow: "إرثٌ راسخ في خدمة ضيوف الرحمن",
+      mark: "أ",
+      body: "مجموعة الكتبي هي شركة لها باع طويل في المشاركة الفعّالة في خدمة زوار مكة المكرمة والمدينة المنورة. عُرف اسم الكتبي منذ أن بدأ السيد محمد مكي الكتبي العمل على خدمة مجموعة من الحجاج، إلى أن تأسست الشركة على يد المهندس عبدالرزاق بديع محمد مكي الكتبي. ومنذ ذلك الحين، نمت أعمالها وتوسعت حتى احتلت مركزاً متميزاً بين أكبر خمس شركات عمرة في المملكة العربية السعودية.",
+      facts: [
+        { value: "مكة والمدينة", label: "في خدمة زوار المدينتين المقدستين" },
+        { value: "عبر الأجيال", label: "اسمٌ راسخ في خدمة الحجاج والمعتمرين" },
+        { value: "ضمن أكبر 5", label: "من شركات العمرة في المملكة" },
+      ],
+    },
     services: {
       kicker: "02 — منظومة الخدمات",
       title: "كل ما تحتاجه في رحلتك، تحت سقف واحد",
       subtitle: "",
       cards: [
         {
-          icon: "visa",
+          image: "/images/service-umrah-visa.jpeg",
           title: "تأشيرة العمرة",
           text: "نتولى إصدار تأشيرتك ومتابعة إجراءاتها الرسمية بسهولة وسرعة.",
         },
         {
-          icon: "transport",
+          image: "/images/service-transportation.jpeg",
           title: "النقل والمواصلات",
           text: "تنقلات منظّمة بين المطار والحرم والمزارات — في موعدك دائماً.",
         },
         {
-          icon: "tours",
+          image: "/images/service-tours.jpeg",
           title: "المزارات والتجارب",
           text: "جولات غنية في أبرز المواقع الدينية والتراثية والثقافية في المملكة.",
         },
         {
-          icon: "hospitality",
+          image: "/images/service-hospitality.jpeg",
           title: "الضيافة والخدمات الاستثنائية",
           text: "إقامة راقية واستقبال يليق بضيوف الرحمن.",
         },
@@ -81,39 +89,63 @@ export const content = {
       cards: [
         {
           title: "تويوتا كراون",
+          type: "سيدان",
           text: "سيارة سيدان فاخرة للأفراد والمجموعات الصغيرة، تجمع بين الراحة والأناقة في كل رحلة.",
           meta: "حتى 3 ركاب",
-          images: ["/images/fleet-toyota-crown-exterior.jpeg", "/images/fleet-toyota-crown-detail.jpeg"],
+          images: [
+            "/images/fleet-toyota-crown-exterior.jpeg",
+            "/images/fleet-toyota-crown-detail.jpeg",
+          ],
         },
         {
           title: "فورد تورس",
+          type: "سيدان",
           text: "خيار أنيق وعملي للتنقلات الخاصة، مع مقصورة مريحة وتجربة قيادة راقية.",
           meta: "حتى 3 ركاب",
-          images: ["/images/fleet-ford-taurus-exterior.jpeg", "/images/fleet-ford-taurus-detail.jpeg"],
+          images: [
+            "/images/fleet-ford-taurus-exterior.jpeg",
+            "/images/fleet-ford-taurus-detail.jpeg",
+          ],
         },
         {
           title: "GMC يوكن VIP",
+          type: "دفع رباعي VIP",
           text: "لمن يستحق الفخامة — مساحة رحبة بأعلى مستويات الخصوصية والراحة.",
           meta: "حتى 7 ركاب",
-          images: ["/images/fleet-gmc-yukon-exterior.jpeg", "/images/fleet-gmc-yukon-detail.jpeg"],
+          images: [
+            "/images/fleet-gmc-yukon-exterior.jpeg",
+            "/images/fleet-gmc-yukon-detail.jpeg",
+          ],
         },
         {
           title: "تويوتا هايس",
+          type: "هايس",
           text: "مساحة عملية ورحبة للمجموعات المتوسطة، مثالية للتنقلات اليومية المنظمة.",
           meta: "حتى 10 ركاب",
-          images: ["/images/fleet-toyota-hiace-exterior.jpeg", "/images/fleet-toyota-hiace-detail.jpeg"],
+          images: [
+            "/images/fleet-toyota-hiace-exterior.jpeg",
+            "/images/fleet-toyota-hiace-detail.jpeg",
+          ],
         },
         {
           title: "الحافلات السياحية الكبيرة",
+          type: "حافلة سياحية",
           text: "للمجموعات الكبيرة — سعة تصل إلى 49 راكباً بكل الأريحية.",
           meta: "حتى 49 راكباً",
-          images: ["/images/fleet-coaches-exterior.jpeg", "/images/fleet-coaches-detail.jpeg"],
+          images: [
+            "/images/fleet-coaches-exterior.jpeg",
+            "/images/fleet-coaches-detail.jpeg",
+          ],
         },
         {
           title: "حافلة VIP الفاخرة",
+          type: "حافلة VIP",
           text: "مقصورة تنفيذية بمقاعد فاخرة وتجهيزات متقدمة لرحلات خاصة أكثر راحة وتميزاً.",
-          meta: "مقصورة VIP",
-          images: ["/images/fleet-vip-coach-exterior.jpeg", "/images/fleet-vip-coach-detail.jpeg"],
+          meta: "حتى 9 ركاب",
+          images: [
+            "/images/fleet-vip-coach-exterior.jpeg",
+            "/images/fleet-vip-coach-detail.jpeg",
+          ],
         },
       ],
     },
@@ -305,7 +337,8 @@ export const content = {
       ],
       submit: "أرسل طلبك — سنتواصل معك فوراً",
       note: "رحلة عمرة على مقاسك — أنت تختار، ونحن ننفّذ.",
-      ready: "تم تجهيز طلبك. أضف رقم واتساب الأعمال لإتمام الإرسال.",
+      ready:
+        "تم تجهيز طلبك. سيتم فتح واتساب لإرسال الطلب إلى +966 12 542 6662.",
     },
     testimonialsContact: {
       kicker: "10 — آراء العملاء وقنوات التواصل",
@@ -329,7 +362,7 @@ export const content = {
         "البريد الإلكتروني",
         "العنوان",
         "نموذج التواصل",
-        "واتساب (متاح دائماً)",
+        "واتساب: +966 12 542 6662 (متاح دائماً)",
       ],
       form: {
         name: "الاسم",
@@ -358,14 +391,10 @@ export const content = {
     language: "Change language",
     portal: "Employee Portal",
     nav: [
-      { label: "Home", href: "#home" },
-      { label: "Services", href: "#services" },
-      { label: "Umrah Visa", href: "#umrah-visa" },
-      { label: "Packages", href: "#trip-planner" },
-      { label: "Our Fleet", href: "#transport" },
-      { label: "Offers", href: "#offers" },
-      { label: "Discover KSA", href: "#discover" },
-      { label: "Feedback", href: "#contact" },
+      { label: "Home", href: "/" },
+      { label: "Services", href: "/services" },
+      { label: "Plan Your Trip", href: "/trips" },
+      { label: "Contact", href: "/contact" },
     ],
     hero: {
       eyebrow: "A Complete Spiritual & Cultural Journey",
@@ -376,28 +405,46 @@ export const content = {
       secondary: "Build Your Own Trip",
       scroll: "Scroll to explore",
     },
+    about: {
+      kicker: "ALKUTBI GROUP · SAUDI ARABIA",
+      title: "About Us",
+      eyebrow: "A legacy of serving the Guests of God",
+      mark: "A",
+      body: "Al Kutbi Group has been known for years for actively serving visitors to Makkah and Al-Madinah. The Al Kutbi name became known when Mr. Muhammad Makki Al Kutbi began serving groups of pilgrims. The company was later founded by Eng. Abdul Razzaq Badie Muhammad Makki Al Kutbi, and its business continued to grow and expand until it secured a distinguished position among the five largest Umrah companies in the Kingdom of Saudi Arabia.",
+      facts: [
+        {
+          value: "Makkah & Madinah",
+          label: "Serving visitors to the two holy cities",
+        },
+        {
+          value: "Across generations",
+          label: "A name rooted in pilgrim service",
+        },
+        { value: "Top five", label: "Among the Kingdom's Umrah companies" },
+      ],
+    },
     services: {
       kicker: "02 — Services",
       title: "Everything You Need for Your Journey, Under One Roof",
       subtitle: "",
       cards: [
         {
-          icon: "visa",
+          image: "/images/service-umrah-visa.jpeg",
           title: "Umrah Visa",
           text: "We handle your visa application and all official procedures — quickly and seamlessly.",
         },
         {
-          icon: "transport",
+          image: "/images/service-transportation.jpeg",
           title: "Transportation",
           text: "Organized transfers between the airport, Haram, and key sites — always on time.",
         },
         {
-          icon: "tours",
+          image: "/images/service-tours.jpeg",
           title: "Tours & Experiences",
           text: "Rich guided tours of the Kingdom's most significant religious, heritage, and cultural landmarks.",
         },
         {
-          icon: "hospitality",
+          image: "/images/service-hospitality.jpeg",
           title: "Hospitality & Premium Services",
           text: "Upscale accommodation and a reception befitting the Guests of God.",
         },
@@ -431,39 +478,63 @@ export const content = {
       cards: [
         {
           title: "Toyota Crown",
+          type: "Sedan",
           text: "A refined luxury sedan for individuals and small groups, combining comfort and elegance on every journey.",
           meta: "Up to 3 passengers",
-          images: ["/images/fleet-toyota-crown-exterior.jpeg", "/images/fleet-toyota-crown-detail.jpeg"],
+          images: [
+            "/images/fleet-toyota-crown-exterior.jpeg",
+            "/images/fleet-toyota-crown-detail.jpeg",
+          ],
         },
         {
           title: "Ford Taurus",
+          type: "Sedan",
           text: "An elegant and practical choice for private transfers, with a comfortable cabin and refined ride.",
           meta: "Up to 3 passengers",
-          images: ["/images/fleet-ford-taurus-exterior.jpeg", "/images/fleet-ford-taurus-detail.jpeg"],
+          images: [
+            "/images/fleet-ford-taurus-exterior.jpeg",
+            "/images/fleet-ford-taurus-detail.jpeg",
+          ],
         },
         {
           title: "VIP GMC Yukon",
+          type: "VIP SUV",
           text: "For those who expect the finest — generous space with maximum privacy and comfort.",
           meta: "Up to 7 passengers",
-          images: ["/images/fleet-gmc-yukon-exterior.jpeg", "/images/fleet-gmc-yukon-detail.jpeg"],
+          images: [
+            "/images/fleet-gmc-yukon-exterior.jpeg",
+            "/images/fleet-gmc-yukon-detail.jpeg",
+          ],
         },
         {
           title: "Toyota Hiace",
+          type: "Hiace",
           text: "A practical, spacious vehicle for mid-sized groups and smoothly organized daily transfers.",
           meta: "Up to 10 passengers",
-          images: ["/images/fleet-toyota-hiace-exterior.jpeg", "/images/fleet-toyota-hiace-detail.jpeg"],
+          images: [
+            "/images/fleet-toyota-hiace-exterior.jpeg",
+            "/images/fleet-toyota-hiace-detail.jpeg",
+          ],
         },
         {
           title: "Large Tourist Coaches",
+          type: "Tourist Bus",
           text: "For large delegations — capacity up to 49 passengers in full comfort.",
           meta: "Up to 49 passengers",
-          images: ["/images/fleet-coaches-exterior.jpeg", "/images/fleet-coaches-detail.jpeg"],
+          images: [
+            "/images/fleet-coaches-exterior.jpeg",
+            "/images/fleet-coaches-detail.jpeg",
+          ],
         },
         {
           title: "Luxury VIP Coach",
+          type: "VIP Bus",
           text: "An executive cabin with premium seating and advanced amenities for an exceptionally comfortable private journey.",
-          meta: "VIP cabin",
-          images: ["/images/fleet-vip-coach-exterior.jpeg", "/images/fleet-vip-coach-detail.jpeg"],
+          meta: "Up to 9 passengers",
+          images: [
+            "/images/fleet-vip-coach-exterior.jpeg",
+            "/images/fleet-vip-coach-detail.jpeg",
+          ],
         },
       ],
     },
@@ -677,7 +748,7 @@ export const content = {
       submit: "Send Your Request — We'll Be in Touch Immediately",
       note: "A tailor-made Umrah experience — you choose, we deliver.",
       ready:
-        "Your request is ready. Add the business WhatsApp number to enable direct sending.",
+        "Your request is ready. WhatsApp will open to send it to +966 12 542 6662.",
     },
     testimonialsContact: {
       kicker: "10 — Testimonials & Contact",
@@ -701,7 +772,7 @@ export const content = {
         "Email address",
         "Our address",
         "Contact form",
-        "WhatsApp (always available)",
+        "WhatsApp: +966 12 542 6662 (always available)",
       ],
       form: {
         name: "Name",

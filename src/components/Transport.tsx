@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-type TransportCard = { title: string; text: string; meta: string; images: readonly string[] };
+type TransportCard = { title: string; type: string; text: string; meta: string; images: readonly string[] };
 type TransportCopy = { kicker: string; title: string; subtitle: string; cards: readonly TransportCard[] };
 
 function VehicleCard({ card }: { card: TransportCard }) {
@@ -29,7 +29,11 @@ function VehicleCard({ card }: { card: TransportCard }) {
         >0{index + 1}</button>)}
       </div>
     </div>
-    <div className="vehicle-copy"><small>{card.meta}</small><h3>{card.title}</h3><p>{card.text}</p></div>
+    <div className="vehicle-spec">
+      <strong>{card.type}</strong>
+      <span>{card.meta}</span>
+    </div>
+    <div className="vehicle-copy"><h3>{card.title}</h3><p>{card.text}</p></div>
   </article>;
 }
 

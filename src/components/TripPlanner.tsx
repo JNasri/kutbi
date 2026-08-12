@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent, type MouseEvent } from 'react';
 import { createPortal } from 'react-dom';
+import { whatsappNumber, whatsappUrl } from '../contact';
 
 type TripStep = { number: string; label: string; field: string; type: string; placeholder?: string; options?: readonly string[] };
 type PackageCopy = { id: string; name: string; label: string; description: string; features: readonly string[]; cta: string; featured?: boolean };
@@ -17,10 +18,8 @@ type PlannerCopy = {
 type FormValues = Record<string, string>;
 export type PlannerMode = 'packages' | 'custom';
 
-export const whatsappNumber = (import.meta.env.VITE_WHATSAPP_NUMBER as string | undefined)?.replace(/\D/g, '') ?? '';
-
 function openWhatsApp(summary: string) {
-  window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(summary)}`, '_blank', 'noopener,noreferrer');
+  window.open(`${whatsappUrl}?text=${encodeURIComponent(summary)}`, '_blank', 'noopener,noreferrer');
 }
 
 export default function TripPlanner({ copy, mode, onModeChange }: { copy: PlannerCopy; mode: PlannerMode; onModeChange: (mode: PlannerMode) => void }) {

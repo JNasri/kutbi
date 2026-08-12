@@ -2,6 +2,7 @@ import Logo from "./Logo";
 import BlogCarousel from "./BlogCarousel";
 import type { Language } from "../siteContent";
 import type { PlannerMode } from "./TripPlanner";
+import { Link } from "react-router";
 
 type HeroCopy = {
   eyebrow: string;
@@ -37,14 +38,14 @@ export default function Hero({
           </h1>
           <p className="hero-lede reveal-item">{copy.subtitle}</p>
           <div className="hero-actions reveal-item">
-            <a className="button button-gold" href="#trip-planner" onClick={() => onSelectPlannerMode("packages")}>
+            <Link className="button button-gold" to="/trips?mode=packages" onClick={() => onSelectPlannerMode("packages")}>
               {copy.primary}
-              <span>↓</span>
-            </a>
-            <a className="button button-ghost" href="#trip-planner" onClick={() => onSelectPlannerMode("custom")}>
+              <span>↗</span>
+            </Link>
+            <Link className="button button-ghost" to="/trips?mode=custom" onClick={() => onSelectPlannerMode("custom")}>
               {copy.secondary}
               <span>↗</span>
-            </a>
+            </Link>
           </div>
         </div>
         <BlogCarousel language={language} />
@@ -54,7 +55,7 @@ export default function Hero({
         <i />
       </div>
       <div className="hero-index">
-        01 <span>/</span> 05
+        01 <span>/</span> 04
       </div>
     </section>
   );

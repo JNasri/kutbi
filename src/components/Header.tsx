@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { LuLockKeyhole } from 'react-icons/lu';
 import type { Language } from '../siteContent';
 import Logo from './Logo';
+import { Link, NavLink, useLocation } from 'react-router';
 
 export type Theme = 'light' | 'dark';
 
@@ -24,6 +25,8 @@ type HeaderProps = {
 export default function Header({ language, setLanguage, theme, setTheme, copy }: HeaderProps) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { pathname } = useLocation();
+  const solidHeader = pathname !== '/';
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 32);
@@ -37,6 +40,8 @@ export default function Header({ language, setLanguage, theme, setTheme, copy }:
     return () => { document.body.style.overflow = ''; };
   }, [open]);
 
+  useEffect(() => setOpen(false), [pathname]);
+
   useEffect(() => {
     if (!open) return;
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -45,11 +50,6 @@ export default function Header({ language, setLanguage, theme, setTheme, copy }:
     window.addEventListener('keydown', closeOnEscape);
     return () => window.removeEventListener('keydown', closeOnEscape);
   }, [open]);
-
-  const goTo = (href: string) => {
-    setOpen(false);
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
-  };
 
   const toggleLanguage = () => setLanguage(language === 'ar' ? 'en' : 'ar');
   const toggleTheme = () => setTheme(theme === 'light' ? 'dark' : 'light');
@@ -76,9 +76,9 @@ export default function Header({ language, setLanguage, theme, setTheme, copy }:
         </div>
         <nav>
           {copy.nav.map((item, index) => (
-            <a key={item.href} href={item.href} onClick={(event) => { event.preventDefault(); goTo(item.href); }}>
+            <NavLink key={item.href} to={item.href} end={item.href === '/'} onClick={() => setOpen(false)}>
               <small>0{index + 1}</small><span>{item.label}</span><b>↗</b>
-            </a>
+            </NavLink>
           ))}
           <a className="mobile-portal-link" href={employeePortalUrl} target="_blank" rel="noopener noreferrer">
             <small>{String(copy.nav.length + 1).padStart(2, '0')}</small><span>{copy.portal}</span><LuLockKeyhole aria-hidden="true" focusable="false" />
@@ -92,14 +92,14 @@ export default function Header({ language, setLanguage, theme, setTheme, copy }:
   );
 
   return <>
-    <header className={`site-header ${scrolled ? 'is-scrolled' : ''}`}>
-      <a className="brand" href="#home" onClick={(event) => { event.preventDefault(); goTo('#home'); }} aria-label={copy.brand}>
+    <header className={`site-header ${scrolled || solidHeader ? 'is-scrolled' : ''}`}>
+      <Link className="brand" to="/" aria-label={copy.brand}>
         <Logo />
         <span><b>{copy.brand}</b><small>{copy.brandEn}</small></span>
-      </a>
+      </Link>
 
       <nav className="desktop-nav" aria-label={copy.menu}>
-        {copy.nav.map((item) => <a key={item.href} href={item.href}>{item.label}</a>)}
+        {copy.nav.map((item) => <NavLink key={item.href} to={item.href} end={item.href === '/'}>{item.label}</NavLink>)}
       </nav>
 
       <div className="header-actions">
