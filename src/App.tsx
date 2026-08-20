@@ -73,8 +73,8 @@ function MarketingSite() {
       <main>
         <Routes>
           <Route index element={<div className="routed-page home-page"><Hero copy={copy.hero} language={language} onSelectPlannerMode={changePlannerMode} /><AboutUs copy={copy.about} /></div>} />
-          <Route path="services" element={<div className="routed-page"><Services copy={copy.services} /><UmrahVisa copy={copy.visa} /><Transport copy={copy.transport} /></div>} />
-          <Route path="trips" element={<div className="routed-page"><TripPlanner key={`planner-${language}`} copy={copy.planner} mode={plannerMode} onModeChange={changePlannerMode} /><SeasonalOffers copy={copy.offers} /><DiscoverSaudi key={`discover-${language}`} copy={copy.discover} /></div>} />
+          <Route path="services" element={<div className="routed-page"><Services copy={copy.services} theme={theme} /><UmrahVisa copy={copy.visa} /><Transport copy={copy.transport} /></div>} />
+          <Route path="trips" element={<div className="routed-page"><TripPlanner key={`planner-${language}`} copy={copy.planner} discover={copy.discover} transport={copy.transport} mode={plannerMode} onModeChange={changePlannerMode} /><SeasonalOffers copy={copy.offers} /><DiscoverSaudi key={`discover-${language}`} copy={copy.discover} /></div>} />
           <Route path="contact" element={<div className="routed-page"><TestimonialsContact copy={copy.testimonialsContact} /></div>} />
           <Route path="about" element={<Navigate to="/#about" replace />} />
           <Route path="fleet" element={<Navigate to="/services#transport" replace />} />

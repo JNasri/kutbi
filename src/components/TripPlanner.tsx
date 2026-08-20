@@ -4,6 +4,19 @@ import { whatsappNumber, whatsappUrl } from '../contact';
 
 type TripStep = { number: string; label: string; field: string; type: string; placeholder?: string; options?: readonly string[] };
 type PackageCopy = { id: string; name: string; label: string; description: string; features: readonly string[]; cta: string; featured?: boolean };
+type DiscoverCopy = {
+  categories: readonly {
+    id: string;
+    label: string;
+    items: readonly { name: string }[];
+  }[];
+};
+type TransportCopy = {
+  cards: readonly {
+    title: string;
+    type: string;
+  }[];
+};
 type PlannerCopy = {
   kicker: string; title: string; subtitle: string; packagesKicker: string;
   modePackages: string; modeCustom: string; packagesTitle: string; packagesSubtitle: string;
@@ -22,13 +35,15 @@ function openWhatsApp(summary: string) {
   window.open(`${whatsappUrl}?text=${encodeURIComponent(summary)}`, '_blank', 'noopener,noreferrer');
 }
 
-export default function TripPlanner({ copy, mode, onModeChange }: { copy: PlannerCopy; mode: PlannerMode; onModeChange: (mode: PlannerMode) => void }) {
+export default function TripPlanner({ copy, discover, transport, mode, onModeChange }: { copy: PlannerCopy; discover: DiscoverCopy; transport: TransportCopy; mode: PlannerMode; onModeChange: (mode: PlannerMode) => void }) {
   const [values, setValues] = useState<FormValues>({});
+  const [extraDestinations, setExtraDestinations] = useState<Set<string>>(() => new Set());
   const [selectedPackage, setSelectedPackage] = useState('');
   const [status, setStatus] = useState('');
   const [activePackage, setActivePackage] = useState<PackageCopy | null>(null);
   const [modalStatus, setModalStatus] = useState('');
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const destinationDetailsRef = useRef<HTMLDetailsElement>(null);
 
   useEffect(() => {
     if (!activePackage) return;
@@ -45,9 +60,29 @@ export default function TripPlanner({ copy, mode, onModeChange }: { copy: Planne
     };
   }, [activePackage]);
 
+  useEffect(() => {
+    const closeDestinationMenu = (event: PointerEvent) => {
+      const menu = destinationDetailsRef.current;
+      if (menu?.open && event.target instanceof Node && !menu.contains(event.target)) menu.open = false;
+    };
+    const closeDestinationMenuOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && destinationDetailsRef.current?.open) destinationDetailsRef.current.open = false;
+    };
+
+    document.addEventListener('pointerdown', closeDestinationMenu, { passive: true });
+    document.addEventListener('keydown', closeDestinationMenuOnEscape);
+    return () => {
+      document.removeEventListener('pointerdown', closeDestinationMenu);
+      document.removeEventListener('keydown', closeDestinationMenuOnEscape);
+    };
+  }, []);
+
   const submitCustomTrip = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const summary = copy.steps.map((step) => `${step.label}: ${values[step.field] || '-'}`).join('\n');
+    const summary = copy.steps.map((step) => {
+      const value = step.field === 'extras' ? [...extraDestinations].join(', ') : values[step.field];
+      return `${step.label}: ${value || '-'}`;
+    }).join('\n');
     if (whatsappNumber) openWhatsApp(summary);
     else setStatus(copy.ready);
   };
@@ -83,6 +118,17 @@ export default function TripPlanner({ copy, mode, onModeChange }: { copy: Planne
     setStatus('');
   };
 
+  const toggleExtraDestination = (name: string) => setExtraDestinations((current) => {
+    const next = new Set(current);
+    if (next.has(name)) next.delete(name);
+    else next.add(name);
+    return next;
+  });
+
+  const selectedDestinationNames = discover.categories.flatMap((category) =>
+    category.items.filter((item) => extraDestinations.has(item.name)).map((item) => item.name),
+  );
+
   return <section id="trip-planner" className="content-section planner-section">
     <div className="section-heading content-wrap">
       <p>{mode === 'packages' ? copy.packagesKicker : copy.kicker}</p>
@@ -109,10 +155,34 @@ export default function TripPlanner({ copy, mode, onModeChange }: { copy: Planne
       <div className="package-note"><p>{status || copy.packageNote}</p><span>ALKUTBI GROUP</span></div>
     </div> : <form className="trip-form planner-mode-panel content-wrap" role="tabpanel" onSubmit={submitCustomTrip}>
       <div className="snake-line" aria-hidden="true" />
-      <div className="trip-steps">{copy.steps.map((step, index) => <label className={`trip-step step-${index + 1}`} key={step.field}>
-        <span className="step-number">{step.number}</span><strong>{step.label}</strong>
-        {step.type === 'select' ? <select required value={values[step.field] ?? ''} onChange={(event) => setValues((current) => ({ ...current, [step.field]: event.target.value }))}><option value="">—</option>{step.options?.map((option) => <option key={option}>{option}</option>)}</select> : <input required={index < 4} min={step.type === 'number' ? 1 : undefined} type={step.type} placeholder={step.placeholder} value={values[step.field] ?? ''} onChange={(event) => setValues((current) => ({ ...current, [step.field]: event.target.value }))} />}
-      </label>)}</div>
+      <div className="trip-steps">{copy.steps.map((step, index) => {
+        const labelId = `trip-step-${step.field}`;
+        const selectOptions = step.field === 'vehicle'
+          ? transport.cards.map((vehicle) => ({
+              value: vehicle.title,
+              label: `${vehicle.title} — ${vehicle.type}`,
+            }))
+          : (step.options ?? []).map((option) => ({ value: option, label: option }));
+
+        return <div className={`trip-step step-${index + 1}`} key={step.field}>
+          <span className="step-number">{step.number}</span><strong id={labelId}>{step.label}</strong>
+          {step.field === 'extras' ? <details ref={destinationDetailsRef} className="destination-multiselect">
+            <summary aria-labelledby={labelId}>
+              <span>{selectedDestinationNames.length ? selectedDestinationNames.join(', ') : step.placeholder ?? '—'}</span>
+              <b aria-hidden="true">⌄</b>
+            </summary>
+            <div className="destination-options">
+              {discover.categories.map((category) => <fieldset key={category.id}>
+                <legend>{category.label}</legend>
+                {category.items.map((item) => <label key={item.name}>
+                  <input type="checkbox" checked={extraDestinations.has(item.name)} onChange={() => toggleExtraDestination(item.name)} />
+                  <span>{item.name}</span>
+                </label>)}
+              </fieldset>)}
+            </div>
+          </details> : step.type === 'select' ? <select aria-labelledby={labelId} required value={values[step.field] ?? ''} onChange={(event) => setValues((current) => ({ ...current, [step.field]: event.target.value }))}><option value="">—</option>{selectOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select> : <input aria-labelledby={labelId} required={index < 4} min={step.type === 'number' ? 1 : undefined} type={step.type} placeholder={step.placeholder} value={values[step.field] ?? ''} onChange={(event) => setValues((current) => ({ ...current, [step.field]: event.target.value }))} />}
+        </div>;
+      })}</div>
       <div className="planner-submit"><p>{status || copy.note}</p><button className="button button-gold" type="submit">{copy.submit}<span>↗</span></button></div>
     </form>}
 
