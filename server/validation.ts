@@ -17,6 +17,12 @@ export const blogSchema = z.object({
     (value) => value.startsWith('/') || /^https:\/\//i.test(value),
     'Image must be a local path or HTTPS URL.',
   ),
+  gallery_images: z.array(
+    z.string().trim().min(1).max(2_000).refine(
+      (value) => value.startsWith('/') || /^https:\/\//i.test(value),
+      'Gallery images must use local paths or HTTPS URLs.',
+    ),
+  ).max(10).default([]),
   status: z.enum(['draft', 'published']),
 });
 

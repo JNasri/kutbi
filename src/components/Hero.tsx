@@ -10,7 +10,7 @@ type HeroCopy = {
   subtitle: string;
   primary: string;
   secondary: string;
-  scroll: string;
+  scroll?: string;
 };
 
 export default function Hero({
@@ -38,11 +38,19 @@ export default function Hero({
           </h1>
           <p className="hero-lede reveal-item">{copy.subtitle}</p>
           <div className="hero-actions reveal-item">
-            <Link className="button button-gold" to="/trips?mode=packages" onClick={() => onSelectPlannerMode("packages")}>
+            <Link
+              className="button button-gold"
+              to="/trips?mode=packages"
+              onClick={() => onSelectPlannerMode("packages")}
+            >
               {copy.primary}
               <span>↗</span>
             </Link>
-            <Link className="button button-ghost" to="/trips?mode=custom" onClick={() => onSelectPlannerMode("custom")}>
+            <Link
+              className="button button-ghost"
+              to="/trips?mode=custom"
+              onClick={() => onSelectPlannerMode("custom")}
+            >
               {copy.secondary}
               <span>↗</span>
             </Link>

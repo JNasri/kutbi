@@ -17,6 +17,8 @@ const DiscoverSaudi = lazy(() => import('./components/DiscoverSaudi'));
 const TestimonialsContact = lazy(() => import('./components/TestimonialsContact'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const DashboardPage = lazy(() => import('./pages/DashboardPage'));
+const JournalPage = lazy(() => import('./pages/JournalPage'));
+const JournalArticlePage = lazy(() => import('./pages/JournalArticlePage'));
 
 function MarketingSite() {
   const [language, setLanguage] = useState<Language>('ar');
@@ -37,7 +39,7 @@ function MarketingSite() {
   useEffect(() => {
     document.documentElement.lang = language;
     document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
-    const currentPage = copy.nav.find((item) => item.href === location.pathname)?.label;
+    const currentPage = copy.nav.find((item) => item.href === location.pathname || (item.href === '/journal' && location.pathname.startsWith('/journal/')))?.label;
     document.title = currentPage ? `${currentPage} | ${copy.brand}` : `${copy.brand} | Alkutbi Group`;
   }, [copy.brand, copy.nav, language, location.pathname]);
 
@@ -54,11 +56,20 @@ function MarketingSite() {
       return;
     }
 
-    const scrollTimer = window.setTimeout(() => {
-      document.querySelector(location.hash)?.scrollIntoView({ block: 'start' });
-    }, 180);
+    let frame = 0;
+    let attempts = 0;
+    const scrollToTarget = () => {
+      const target = document.querySelector(location.hash);
+      if (target) {
+        target.scrollIntoView({ block: 'start' });
+        return;
+      }
+      attempts += 1;
+      if (attempts < 120) frame = window.requestAnimationFrame(scrollToTarget);
+    };
 
-    return () => window.clearTimeout(scrollTimer);
+    frame = window.requestAnimationFrame(scrollToTarget);
+    return () => window.cancelAnimationFrame(frame);
   }, [location.hash, location.pathname]);
 
   useEffect(() => {
@@ -76,6 +87,8 @@ function MarketingSite() {
           <Route path="services" element={<div className="routed-page"><Services copy={copy.services} theme={theme} /><UmrahVisa copy={copy.visa} /><Transport copy={copy.transport} /></div>} />
           <Route path="trips" element={<div className="routed-page"><TripPlanner key={`planner-${language}`} copy={copy.planner} discover={copy.discover} transport={copy.transport} mode={plannerMode} onModeChange={changePlannerMode} /><SeasonalOffers copy={copy.offers} /><DiscoverSaudi key={`discover-${language}`} copy={copy.discover} /></div>} />
           <Route path="contact" element={<div className="routed-page"><TestimonialsContact copy={copy.testimonialsContact} /></div>} />
+          <Route path="journal" element={<JournalPage language={language} />} />
+          <Route path="journal/:slug" element={<JournalArticlePage language={language} />} />
           <Route path="about" element={<Navigate to="/#about" replace />} />
           <Route path="fleet" element={<Navigate to="/services#transport" replace />} />
           <Route path="offers" element={<Navigate to="/trips#offers" replace />} />

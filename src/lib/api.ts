@@ -8,11 +8,12 @@ export class ApiError extends Error {
 }
 
 export async function apiRequest<T>(path: string, options?: RequestInit): Promise<T> {
+  const isFormData = typeof FormData !== 'undefined' && options?.body instanceof FormData;
   const response = await fetch(path, {
     credentials: 'same-origin',
     ...options,
     headers: {
-      ...(options?.body ? { 'Content-Type': 'application/json' } : {}),
+      ...(options?.body && !isFormData ? { 'Content-Type': 'application/json' } : {}),
       ...options?.headers,
     },
   });
@@ -25,4 +26,3 @@ export async function apiRequest<T>(path: string, options?: RequestInit): Promis
   if (response.status === 204) return undefined as T;
   return response.json() as Promise<T>;
 }
-

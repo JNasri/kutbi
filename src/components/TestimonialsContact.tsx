@@ -57,7 +57,7 @@ export default function TestimonialsContact({ copy }: { copy: TestimonialsContac
           <ul>{copy.channels.map((channel) => <li key={channel}><i>↗</i><span>{channel}</span></li>)}</ul>
         </div>
 
-        <form className="public-contact-form" onSubmit={sendEmail}>
+        <form id="contact-form" className="public-contact-form" onSubmit={sendEmail}>
           <label>
             <span>{copy.form.name}</span>
             <input name="name" type="text" autoComplete="name" required />

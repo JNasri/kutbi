@@ -11,6 +11,7 @@ export type BlogPost = {
   content_en: string;
   image_url: string;
   status?: BlogStatus;
+  gallery_images: string[];
   published_at?: string | null;
   created_at?: string;
   updated_at?: string;

@@ -12,16 +12,16 @@ export const content = {
       { label: "الرئيسية", href: "/" },
       { label: "خدماتنا", href: "/services" },
       { label: "صمّم رحلتك", href: "/trips" },
+      { label: "المجلة", href: "/journal" },
       { label: "تواصل معنا", href: "/contact" },
     ],
     hero: {
       eyebrow: "رحلة روحانية وثقافية متكاملة",
       title: "مجموعة الكتبي",
-      subtitle:
-        "مع مجموعة الكتبي، كل تفصيلة في رحلتك بأيدٍ أمينة — من التأشيرة حتى العودة.",
+      subtitle: "نعتني بكم من لحظة الوصول وحتى العودة",
       primary: "استكشف الباقات",
       secondary: "اصنع رحلتك بنفسك",
-      scroll: "مرّر للاستكشاف",
+      // scroll: "مرّر للاستكشاف",
     },
     about: {
       kicker: "مجموعة الكتبي · المملكة العربية السعودية",
@@ -36,9 +36,8 @@ export const content = {
       ],
     },
     services: {
-      kicker: "02 — منظومة الخدمات",
+      kicker: "02 منظومة الخدمات",
       title: "كل ما تحتاجه في رحلتك، تحت سقف واحد",
-      subtitle: "",
       cards: [
         {
           image: "/images/service-umrah-visa.jpeg",
@@ -63,27 +62,33 @@ export const content = {
       ],
     },
     visa: {
-      kicker: "03 — طلب تأشيرة العمرة",
-      title: "تأشيرة العمرة — بثلاث خطوات فقط",
+      kicker: "طلب تأشيرة العمرة",
+      title: "تأشيرة العمرة بثلاث خطوات فقط",
       subtitle:
         "لا تعقيدات، لا انتظار طويل. أرسل طلبك عبر المنصة وسنتولى الباقي فوراً.",
       steps: [
         {
           title: "تعبئة نموذج الطلب",
           text: "أدخل تفاصيل رحلتك: رقم طلب نسك، تواريخ الوصول والمغادرة، عدد المعتمرين، الفندق، النقل، والمسار.",
+          link: "/contact#contact-form",
+          linkLabel: "ابدأ الآن",
         },
         {
           title: "إجراءات تلقائية فورية",
           text: "ستصلك رسالة واتساب فورية تؤكد استلام طلبك، ويُحفظ طلبك مباشرةً في قاعدة بياناتنا.",
+          link: "/contact#contact-form",
+          linkLabel: "ابدأ الآن",
         },
         {
           title: "نُكمل نيابةً عنك",
           text: "نتحقق من الطلب عبر منصة نسك، ونُصدر التأشيرة، ونُرسلها إليك بكل يسر.",
+          link: "/contact#contact-form",
+          linkLabel: "ابدأ الآن",
         },
       ],
     },
     transport: {
-      kicker: "07 — أسطول النقل",
+      kicker: "أسطول النقل",
       title: "أسطولنا — راحتك في كل تنقل",
       subtitle: "مركبات حديثة ومجهّزة لتنقلاتك بين المطار والحرم والمزارات.",
       cards: [
@@ -150,7 +155,7 @@ export const content = {
       ],
     },
     offers: {
-      kicker: "08 — العروض الموسمية",
+      kicker: "العروض الموسمية",
       title: "عروض لا تفوّتها",
       subtitle: "باقات مميزة في أبرز المواسم — احجز قبل انتهاء العرض.",
       offers: [
@@ -169,7 +174,7 @@ export const content = {
       ],
     },
     discover: {
-      kicker: "09 — اكتشف السعودية",
+      kicker: "اكتشف السعودية",
       title: "اكتشف السعودية",
       subtitle: "ما وراء الحرمين — أرض تحمل تاريخاً وحضارةً لا تُضاهى.",
       categories: [
@@ -220,50 +225,81 @@ export const content = {
       added: "تمت الإضافة",
     },
     planner: {
-      kicker: "06 — مصمّم الرحلات",
+      kicker: "مصمّم الرحلات",
       title: "اصنع رحلتك بنفسك",
       subtitle: "رحلة عمرة على مقاسك — أنت تختار، ونحن ننفّذ.",
-      packagesKicker: "04 — الباقات المخصّصة",
+      packagesKicker: "الباقات المخصّصة",
       modePackages: "اختر الباقة",
       modeCustom: "اصنع رحلتك بنفسك",
       packagesTitle: "اختر الباقة التي تناسبك",
-      packagesSubtitle: "",
+      packagesSubtitle:
+        "باقات ديسمبر 2026 — السعر للفرد شامل التأشيرة والنقل والفنادق والإعاشة.",
       packages: [
         {
-          id: "economy",
-          name: "الاقتصادية",
-          label: "رحلة منظّمة",
+          id: "package-1",
+          name: "الباقة 1",
+          label: "زهرة الفرسان • المدينة الجديد",
+          price: "761",
+          pricePrefix: "ابتداءً من",
+          priceLabel: "ريال سعودي للفرد",
           description:
-            "رحلة عمرة منظّمة بكل الأساسيات التي تضمن لك راحة الأداء وطمأنينة البال.",
+            "باقة متوازنة تجمع بين القرب من الحرم والخدمات الأساسية المتكاملة.",
           features: [
-            "رحلة عمرة منظّمة",
-            "كل الأساسيات",
-            "راحة الأداء وطمأنينة البال",
+            "9 ليالٍ في مكة — زهرة الفرسان، أجياد",
+            "3 ليالٍ في المدينة — المدينة الجديد",
+            "التأشيرة والنقل والفنادق والإعاشة مشمولة",
           ],
-          cta: "اختر الاقتصادية",
+          cta: "اختر الباقة 1",
+        },
+
+        {
+          id: "package-2",
+          name: "الباقة 2",
+          label: "إيلاف الخير • سلسبيل الفضي",
+          price: "953",
+          pricePrefix: "ابتداءً من",
+          priceLabel: "ريال سعودي للفرد",
+          description:
+            "إقامة عملية ومتكاملة لمدة 12 ليلة بين مكة المكرمة والمدينة المنورة.",
+          features: [
+            "9 ليالٍ في مكة — إيلاف الخير، أجياد",
+            "3 ليالٍ في المدينة — سلسبيل الفضي",
+            "التأشيرة والنقل والفنادق والإعاشة مشمولة",
+          ],
+          cta: "اختر الباقة 2",
         },
         {
-          id: "special",
-          name: "المميّزة",
-          label: "الأكثر اختياراً",
+          id: "package-3",
+          name: "الباقة 3",
+          label: "مكارم الهجرة • طابة السلام",
+          price: "833",
+          pricePrefix: "ابتداءً من",
+          priceLabel: "ريال سعودي للفرد",
           description:
-            "مستوى أرقى من السكن والخدمات، لتجربة أكثر خصوصية وراحة.",
+            "إقامة مريحة في مكة والمدينة مع جميع خدمات الرحلة الأساسية.",
           features: [
-            "مستوى أرقى من السكن",
-            "خدمات أكثر تميزاً",
-            "خصوصية وراحة أكبر",
+            "9 ليالٍ في مكة — مكارم الهجرة، المسفلة",
+            "3 ليالٍ في المدينة — طابة السلام",
+            "التأشيرة والنقل والفنادق والإعاشة مشمولة",
           ],
-          cta: "اختر المميزة",
+          cta: "اختر الباقة 3",
+        },
+        {
+          id: "package-4",
+          name: "الباقة 4",
+          label: "الأقرب إلى الحرم",
+          price: "1,761",
+          pricePrefix: "ابتداءً من",
+          priceLabel: "ريال سعودي للفرد",
+          description:
+            "إقامة مميزة بجوار أبراج البيت مع سهولة الوصول إلى الحرم المكي.",
+          features: [
+            "9 ليالٍ في مكة — إيلاف كندة، 100 م من الحرم",
+            "3 ليالٍ في المدينة — المنا كريم",
+            "التأشيرة والنقل والفنادق والإعاشة مشمولة",
+          ],
+          cta: "اختر الباقة 4",
           featured: true,
-        },
-        {
-          id: "luxury",
-          name: "الفاخرة",
-          label: "تجربة استثنائية",
-          description:
-            "استقبال خاص، إقامة فاخرة، وأولوية كاملة في كل خطوة — لأن رحلتك تستحق الأفضل.",
-          features: ["استقبال خاص", "إقامة فاخرة", "أولوية كاملة في كل خطوة"],
-          cta: "اختر الفاخرة",
         },
       ],
       packageNote:
@@ -282,14 +318,27 @@ export const content = {
         notesPlaceholder: "التواريخ المتوقعة، عدد المسافرين، أو أي طلبات خاصة…",
         send: "إرسال الطلب",
         close: "إغلاق تفاصيل الباقة",
-        detailLabels: ["المدة المقترحة", "مستوى الدعم", "مرونة البرنامج"],
+        detailLabels: ["مدة الإقامة", "فندق مكة", "فندق المدينة"],
         detailValues: {
-          economy: ["من 5 إلى 7 ليالٍ", "دعم أساسي", "برنامج محدد مسبقاً"],
-          special: ["من 7 إلى 10 ليالٍ", "منسق رحلة مخصص", "برنامج مرن"],
-          luxury: [
-            "مدة مصممة حسب الطلب",
-            "خدمة كونسيرج على مدار الساعة",
-            "مرونة كاملة",
+          "package-1": [
+            "12 ليلة — 9 مكة و3 المدينة",
+            "إيلاف الخير — أجياد، 700 م من الحرم",
+            "سلسبيل الفضي — المنطقة المركزية الغربية",
+          ],
+          "package-2": [
+            "12 ليلة — 9 مكة و3 المدينة",
+            "زهرة الفرسان — أجياد، 200 م من الحرم",
+            "المدينة الجديد — المنطقة المركزية الجنوبية",
+          ],
+          "package-3": [
+            "12 ليلة — 9 مكة و3 المدينة",
+            "مكارم الهجرة — المسفلة، 4.5 كم من الحرم",
+            "طابة السلام — المنطقة المركزية الغربية",
+          ],
+          "package-4": [
+            "12 ليلة — 9 مكة و3 المدينة",
+            "إيلاف كندة — بجوار أبراج البيت، 100 م من الحرم",
+            "المنا كريم — المنطقة المركزية الشمالية",
           ],
         },
       },
@@ -362,7 +411,7 @@ export const content = {
         "البريد الإلكتروني",
         "العنوان",
         "نموذج التواصل",
-        "واتساب: +966 12 542 6662 (متاح دائماً)",
+        "واتساب: +966 12 542 6662",
       ],
       form: {
         name: "الاسم",
@@ -394,6 +443,7 @@ export const content = {
       { label: "Home", href: "/" },
       { label: "Services", href: "/services" },
       { label: "Plan Your Trip", href: "/trips" },
+      { label: "Journal", href: "/journal" },
       { label: "Contact", href: "/contact" },
     ],
     hero: {
@@ -452,21 +502,27 @@ export const content = {
     },
     visa: {
       kicker: "03 — Umrah Visa Request",
-      title: "Umrah Visa — In Just Three Steps",
+      title: "Umrah Visa   In Just Three Steps",
       subtitle:
         "No complexity, no long waits. Submit your request through our platform and we handle the rest immediately.",
       steps: [
         {
           title: "Fill in the Request Form",
           text: "Enter your trip details: Nusuk request number, arrival and departure dates, number of pilgrims, hotel, transport type, and route.",
+          link: "/contact#contact-form",
+          linkLabel: "Start now",
         },
         {
-          title: "Instant Automated Processing",
+          title: "Automated Processing",
           text: "You'll receive an immediate WhatsApp confirmation, and your request is saved securely in our system.",
+          link: "/contact#contact-form",
+          linkLabel: "Start now",
         },
         {
           title: "We Handle the Rest",
-          text: "We verify through the Nusuk platform, issue the visa officially, and deliver it to you with ease.",
+          text: "We verify everything through the Nusuk platform, issue the visa officially, and deliver everything to you with ease.",
+          link: "/contact#contact-form",
+          linkLabel: "Start now",
         },
       ],
     },
@@ -620,47 +676,73 @@ export const content = {
       modePackages: "Choose a Package",
       modeCustom: "Build Your Own Trip",
       packagesTitle: "Choose the Package That Suits You",
-      packagesSubtitle: "",
+      packagesSubtitle:
+        "December 2026 packages — per-person prices include visa, transportation, hotels, and catering.",
       packages: [
         {
-          id: "economy",
-          name: "Economy",
-          label: "Organized essentials",
+          id: "package-1",
+          name: "Package 1",
+          label: "Elaf Al-Khair • Salsabeel Al-Fadhi",
+          price: "953",
+          pricePrefix: "Starting from",
+          priceLabel: "Saudi riyals per person",
           description:
-            "A fully organized Umrah trip with all the essentials — smooth, comfortable, and worry-free.",
+            "A practical, complete 12-night stay between Makkah and Madinah.",
           features: [
-            "A fully organized Umrah trip",
-            "All the essentials",
-            "Smooth and worry-free",
+            "9 nights in Makkah — Elaf Al-Khair, Ajyad",
+            "3 nights in Madinah — Salsabeel Al-Fadhi",
+            "Visa, transportation, hotels, and catering included",
           ],
-          cta: "Choose Economy",
+          cta: "Choose Package 1",
         },
         {
-          id: "special",
-          name: "Premium",
-          label: "Most popular",
+          id: "package-2",
+          name: "Package 2",
+          label: "Zahra Al-Fursan • Al Madinah Al Jadeed",
+          price: "761",
+          pricePrefix: "Starting from",
+          priceLabel: "Saudi riyals per person",
           description:
-            "A step up in accommodation and service, for a more personal and refined experience.",
+            "A balanced package combining proximity to the Haram with complete essential services.",
           features: [
-            "Premium accommodation",
-            "Elevated service",
-            "A personal, refined experience",
+            "9 nights in Makkah — Zahra Al-Fursan, Ajyad",
+            "3 nights in Madinah — Al Madinah Al Jadeed",
+            "Visa, transportation, hotels, and catering included",
           ],
-          cta: "Choose Premium",
+          cta: "Choose Package 2",
+        },
+        {
+          id: "package-3",
+          name: "Package 3",
+          label: "Makarem Al-Hijra • Taba Al Salam",
+          price: "833",
+          pricePrefix: "Starting from",
+          priceLabel: "Saudi riyals per person",
+          description:
+            "A comfortable Makkah and Madinah stay with every essential journey service included.",
+          features: [
+            "9 nights in Makkah — Makarem Al-Hijra, Al-Misfalah",
+            "3 nights in Madinah — Taba Al Salam",
+            "Visa, transportation, hotels, and catering included",
+          ],
+          cta: "Choose Package 3",
+        },
+        {
+          id: "package-4",
+          name: "Package 4",
+          label: "Closest to the Haram",
+          price: "1,761",
+          pricePrefix: "Starting from",
+          priceLabel: "Saudi riyals per person",
+          description:
+            "A distinguished stay beside Abraj Al Bait with easy access to the Grand Mosque.",
+          features: [
+            "9 nights in Makkah — Elaf Kinda, 100 m from the Haram",
+            "3 nights in Madinah — Al Mana Kareem",
+            "Visa, transportation, hotels, and catering included",
+          ],
+          cta: "Choose Package 4",
           featured: true,
-        },
-        {
-          id: "luxury",
-          name: "VIP",
-          label: "Signature experience",
-          description:
-            "Private reception, luxury accommodation, and full priority at every step — because your journey deserves the best.",
-          features: [
-            "Private reception",
-            "Luxury accommodation",
-            "Full priority at every step",
-          ],
-          cta: "Choose VIP",
         },
       ],
       packageNote:
@@ -680,26 +762,27 @@ export const content = {
           "Expected dates, number of travellers, or any special requests…",
         send: "Send inquiry",
         close: "Close package details",
-        detailLabels: [
-          "Suggested duration",
-          "Support level",
-          "Itinerary flexibility",
-        ],
+        detailLabels: ["Stay", "Makkah hotel", "Madinah hotel"],
         detailValues: {
-          economy: [
-            "5–7 nights",
-            "Essential support",
-            "Pre-arranged itinerary",
+          "package-1": [
+            "12 nights — 9 in Makkah and 3 in Madinah",
+            "Elaf Al-Khair — Ajyad, 700 m from the Haram",
+            "Salsabeel Al-Fadhi — Western Central Area",
           ],
-          special: [
-            "7–10 nights",
-            "Dedicated trip coordinator",
-            "Flexible itinerary",
+          "package-2": [
+            "12 nights — 9 in Makkah and 3 in Madinah",
+            "Zahra Al-Fursan — Ajyad, 200 m from the Haram",
+            "Al Madinah Al Jadeed — Southern Central Area",
           ],
-          luxury: [
-            "Tailored duration",
-            "24/7 concierge service",
-            "Fully flexible",
+          "package-3": [
+            "12 nights — 9 in Makkah and 3 in Madinah",
+            "Makarem Al-Hijra — Al-Misfalah, 4.5 km from the Haram",
+            "Taba Al Salam — Western Central Area",
+          ],
+          "package-4": [
+            "12 nights — 9 in Makkah and 3 in Madinah",
+            "Elaf Kinda — beside Abraj Al Bait, 100 m from the Haram",
+            "Al Mana Kareem — Northern Central Area",
           ],
         },
       },
@@ -772,7 +855,7 @@ export const content = {
         "Email address",
         "Our address",
         "Contact form",
-        "WhatsApp: +966 12 542 6662 (always available)",
+        "WhatsApp: +966 12 542 6662",
       ],
       form: {
         name: "Name",

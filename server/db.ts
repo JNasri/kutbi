@@ -36,12 +36,16 @@ export async function initializeDatabase() {
       content_ar TEXT NOT NULL DEFAULT '',
       content_en TEXT NOT NULL DEFAULT '',
       image_url TEXT NOT NULL,
+      gallery_images JSONB NOT NULL DEFAULT '[]'::jsonb,
       status VARCHAR(20) NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'published')),
       author_id BIGINT REFERENCES admins(id) ON DELETE SET NULL,
       published_at TIMESTAMPTZ,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
+
+    ALTER TABLE blog_posts
+      ADD COLUMN IF NOT EXISTS gallery_images JSONB NOT NULL DEFAULT '[]'::jsonb;
 
     CREATE INDEX IF NOT EXISTS blog_posts_status_published_idx
       ON blog_posts (status, published_at DESC);

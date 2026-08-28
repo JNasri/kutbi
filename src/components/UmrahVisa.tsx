@@ -1,4 +1,11 @@
-type VisaStep = { title: string; text: string };
+import { Link } from "react-router";
+
+type VisaStep = {
+  title: string;
+  text: string;
+  link: string;
+  linkLabel: string;
+};
 type VisaCopy = {
   kicker: string;
   title: string;
@@ -23,9 +30,20 @@ export default function UmrahVisa({ copy }: { copy: VisaCopy }) {
               <small>STEP</small>
               <span>0{index + 1}</span>
             </div>
-            <div>
+
+            {/* 1. Added flex, flex-col, and h-full here to make this container take full height */}
+            <div className="flex flex-col h-full">
               <h3>{step.title}</h3>
               <p>{step.text}</p>
+
+              {/* 2. Added mt-auto to push the link down, and inline-flex/self-start to keep its native width */}
+              <Link
+                to={step.link}
+                className="visa-step-link mt-auto inline-flex self-start"
+              >
+                <span>{step.linkLabel}</span>
+                <span aria-hidden="true">↗</span>
+              </Link>
             </div>
           </article>
         ))}
