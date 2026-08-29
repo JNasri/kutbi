@@ -24,5 +24,6 @@ export const blogSchema = z.object({
     ),
   ).max(10).default([]),
   status: z.enum(['draft', 'published']),
+  published_at: z.string().datetime({ offset: true }).nullable().optional(),
 });
 

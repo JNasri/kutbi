@@ -17,7 +17,8 @@ export type BlogPost = {
   updated_at?: string;
 };
 
-export type BlogInput = Omit<BlogPost, 'id' | 'published_at' | 'created_at' | 'updated_at'> & {
+export type BlogInput = Omit<BlogPost, 'id' | 'created_at' | 'updated_at'> & {
   status: BlogStatus;
+  published_at?: string | null;
 };
 

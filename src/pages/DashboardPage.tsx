@@ -7,6 +7,7 @@ import type { BlogInput, BlogPost } from '../types/blog';
 const createEmptyPost = (): BlogInput => ({
   slug: '', title_ar: '', title_en: '', excerpt_ar: '', excerpt_en: '',
   content_ar: '', content_en: '', image_url: '', gallery_images: [], status: 'draft',
+  published_at: new Date().toISOString(),
 });
 
 const slugPattern = /[^a-z0-9]+/g;
@@ -63,6 +64,7 @@ export default function DashboardPage() {
       excerpt_ar: post.excerpt_ar, excerpt_en: post.excerpt_en,
       content_ar: post.content_ar, content_en: post.content_en,
       image_url: post.image_url, gallery_images: post.gallery_images ?? [], status: post.status ?? 'draft',
+      published_at: post.published_at ?? post.created_at ?? new Date().toISOString(),
     });
     setMessage('');
     setError('');
@@ -114,7 +116,11 @@ export default function DashboardPage() {
     setMessage('');
     try {
       const path = editingId ? `/api/admin/blogs/${editingId}` : '/api/admin/blogs';
-      await apiRequest(path, { method: editingId ? 'PUT' : 'POST', body: JSON.stringify(draft) });
+      const payload = {
+        ...draft,
+        slug: draft.slug || createSlug(draft.title_en) || `journal-${Date.now()}`,
+      };
+      await apiRequest(path, { method: editingId ? 'PUT' : 'POST', body: JSON.stringify(payload) });
       const { posts: refreshedPosts } = await apiRequest<{ posts: BlogPost[] }>('/api/admin/blogs');
       const successMessage = editingId ? 'Journal updated successfully.' : 'Journal created successfully.';
       setPosts(refreshedPosts);
@@ -129,7 +135,7 @@ export default function DashboardPage() {
   }
 
   async function deletePost(post: BlogPost) {
-    if (!window.confirm(`Delete “${post.title_en}” and its locally stored images? This cannot be undone.`)) return;
+    if (!window.confirm(`Delete “${post.title_en}” and its stored images? This cannot be undone.`)) return;
     try {
       await apiRequest(`/api/admin/blogs/${post.id}`, { method: 'DELETE' });
       setPosts((current) => current.filter((item) => item.id !== post.id));
@@ -170,7 +176,7 @@ export default function DashboardPage() {
             <div className="admin-post-list">{posts.map((post) => <article className="admin-post-row" key={post.id}>
               <img src={post.image_url} alt="" />
               <div><span className={`status-pill ${post.status}`}>{post.status}</span><h3>{post.title_en}</h3><p dir="rtl">{post.title_ar}</p></div>
-              <small>{post.updated_at ? new Date(post.updated_at).toLocaleDateString() : '—'}</small>
+              <small>{post.published_at || post.created_at ? new Date(post.published_at ?? post.created_at!).toLocaleDateString() : '—'}</small>
               <div className="row-actions"><button type="button" onClick={() => beginEdit(post)}>Edit</button><button className="danger" type="button" onClick={() => deletePost(post)}>Delete</button></div>
             </article>)}</div>
           )}
@@ -182,7 +188,7 @@ export default function DashboardPage() {
             <div className="editor-grid">
               <label>English title<input value={draft.title_en} onChange={(event) => setDraft((value) => ({ ...value, title_en: event.target.value, slug: value.slug || createSlug(event.target.value) }))} required /></label>
               <label dir="rtl">العنوان العربي<input value={draft.title_ar} onChange={(event) => setDraft((value) => ({ ...value, title_ar: event.target.value }))} required /></label>
-              <label className="editor-span-two">Slug<input dir="ltr" value={draft.slug} pattern="[a-z0-9]+(?:-[a-z0-9]+)*" onChange={(event) => setDraft((value) => ({ ...value, slug: createSlug(event.target.value) }))} required /></label>
+              <label className="editor-span-two">Publication date<input type="datetime-local" value={draft.published_at ? new Date(new Date(draft.published_at).getTime() - new Date(draft.published_at).getTimezoneOffset() * 60_000).toISOString().slice(0, 16) : ''} onChange={(event) => setDraft((value) => ({ ...value, published_at: event.target.value ? new Date(event.target.value).toISOString() : null }))} required={draft.status === 'published'} /></label>
 
               <section className="editor-media-block editor-span-two" aria-labelledby="main-image-title">
                 <div><p>MAIN IMAGE</p><h3 id="main-image-title">Journal cover</h3><span>This image appears in the homepage carousel and journal listing.</span></div>

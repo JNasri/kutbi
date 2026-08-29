@@ -5,9 +5,32 @@ import type { Language } from '../siteContent';
 import type { BlogPost } from '../types/blog';
 
 const labels = {
-  ar: { journal: '\u0627\u0644\u0645\u062c\u0644\u0629', back: '\u0627\u0644\u0639\u0648\u062f\u0629 \u0625\u0644\u0649 \u0627\u0644\u0645\u062c\u0644\u0629', gallery: '\u0645\u0646 \u0627\u0644\u0631\u062d\u0644\u0629', error: '\u0644\u0645 \u0646\u062a\u0645\u0643\u0646 \u0645\u0646 \u0627\u0644\u0639\u062b\u0648\u0631 \u0639\u0644\u0649 \u0647\u0630\u0647 \u0627\u0644\u0642\u0635\u0629.' },
-  en: { journal: 'Alkutbi Journal', back: 'Back to the journal', gallery: 'From the journey', error: 'We could not find this journal story.' },
+  ar: {
+    journal: 'مجلة الكتبي',
+    back: 'العودة إلى المجلة',
+    gallery: 'من الحدث',
+    published: 'نُشر في',
+    story: 'قصة من مجموعة الكتبي',
+    error: 'لم نتمكن من العثور على هذه القصة.',
+  },
+  en: {
+    journal: 'Alkutbi Journal',
+    back: 'Back to the journal',
+    gallery: 'From the event',
+    published: 'Published',
+    story: 'A story from Alkutbi Group',
+    error: 'We could not find this journal story.',
+  },
 };
+
+const formatDate = (value: string | null | undefined, language: Language) =>
+  value
+    ? new Intl.DateTimeFormat(language === 'ar' ? 'ar-SA' : 'en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      }).format(new Date(value))
+    : '';
 
 export default function JournalArticlePage({ language }: { language: Language }) {
   const { slug = '' } = useParams();
@@ -37,15 +60,24 @@ export default function JournalArticlePage({ language }: { language: Language })
   if (loading) return <section className="journal-article routed-page"><div className="journal-article-loading" aria-label="Loading" /></section>;
   if (!post) return <section className="journal-article routed-page"><div className="journal-not-found content-wrap"><p>{copy.error}</p><Link to="/journal">{copy.back}</Link></div></section>;
 
+  const publishedDate = post.published_at ?? post.created_at;
+
   return (
     <article className="journal-article routed-page">
-      <header className="article-hero">
-        <img src={post.image_url} alt={title} />
-        <div className="article-hero-shade" />
-        <div className="article-heading content-wrap">
-          <Link to="/journal">{copy.journal}</Link>
-          <h1>{title}</h1>
-          <p>{excerpt}</p>
+      <header className="article-intro">
+        <div className="article-intro-grid content-wrap">
+          <div className="article-heading">
+            <Link to="/journal"><span aria-hidden="true">←</span>{copy.journal}</Link>
+            <div className="article-meta">
+              <span>{copy.story}</span>
+              {publishedDate ? <time dateTime={publishedDate}>{copy.published} · {formatDate(publishedDate, language)}</time> : null}
+            </div>
+            <h1>{title}</h1>
+            <p>{excerpt}</p>
+          </div>
+          <figure className="article-cover">
+            <img src={post.image_url} alt={title} />
+          </figure>
         </div>
       </header>
 
@@ -63,7 +95,7 @@ export default function JournalArticlePage({ language }: { language: Language })
         </section>
       ) : null}
 
-      <footer className="article-back content-wrap"><Link to="/journal"><span aria-hidden="true">\u2190</span>{copy.back}</Link></footer>
+      <footer className="article-back content-wrap"><Link to="/journal"><span aria-hidden="true">←</span>{copy.back}</Link></footer>
     </article>
   );
 }
