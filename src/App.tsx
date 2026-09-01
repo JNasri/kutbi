@@ -5,6 +5,7 @@ import Header, { type Theme } from './components/Header';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
 import type { PlannerMode } from './components/TripPlanner';
+import { preloadPublishedPosts } from './lib/blogs';
 
 const Hero = lazy(() => import('./components/Hero'));
 const AboutUs = lazy(() => import('./components/AboutUs'));
@@ -19,6 +20,10 @@ const LoginPage = lazy(() => import('./pages/LoginPage'));
 const DashboardPage = lazy(() => import('./pages/DashboardPage'));
 const JournalPage = lazy(() => import('./pages/JournalPage'));
 const JournalArticlePage = lazy(() => import('./pages/JournalArticlePage'));
+
+if (typeof window !== 'undefined' && !/^\/(?:login|dashbo?a?rd)/.test(window.location.pathname)) {
+  preloadPublishedPosts();
+}
 
 function MarketingSite() {
   const [language, setLanguage] = useState<Language>('ar');

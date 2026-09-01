@@ -257,17 +257,58 @@ app.post(
   },
 );
 
-app.get("/api/blogs", async (_request, response, next) => {
-  try {
-    const result = await pool.query(
+type PublicBlogSummary = {
+  id: number;
+  slug: string;
+  title_ar: string;
+  title_en: string;
+  excerpt_ar: string;
+  excerpt_en: string;
+  image_url: string;
+  published_at: string | null;
+  created_at: string;
+};
+
+const publicBlogCacheLifetime = 60_000;
+let publicBlogCache: { posts: PublicBlogSummary[]; expiresAt: number } | null = null;
+let publicBlogRequest: Promise<PublicBlogSummary[]> | null = null;
+
+function invalidatePublicBlogCache() {
+  publicBlogCache = null;
+}
+
+async function getPublicBlogSummaries() {
+  if (publicBlogCache && publicBlogCache.expiresAt > Date.now()) {
+    return publicBlogCache.posts;
+  }
+
+  if (!publicBlogRequest) {
+    publicBlogRequest = pool.query<PublicBlogSummary>(
       `SELECT id, slug, title_ar, title_en, excerpt_ar, excerpt_en,
-              content_ar, content_en, image_url, gallery_images, published_at, created_at
+              image_url, published_at, created_at
        FROM blog_posts
        WHERE status = 'published'
        ORDER BY published_at DESC NULLS LAST, created_at DESC
        LIMIT 100`,
-    );
-    response.json({ posts: result.rows });
+    ).then((result) => {
+      publicBlogCache = {
+        posts: result.rows,
+        expiresAt: Date.now() + publicBlogCacheLifetime,
+      };
+      return result.rows;
+    }).finally(() => {
+      publicBlogRequest = null;
+    });
+  }
+
+  return publicBlogRequest;
+}
+
+app.get("/api/blogs", async (_request, response, next) => {
+  try {
+    const posts = await getPublicBlogSummaries();
+    response.set("Cache-Control", "public, max-age=30, stale-while-revalidate=300");
+    response.json({ posts });
   } catch (error) {
     next(error);
   }
@@ -287,6 +328,7 @@ app.get("/api/blogs/:slug", async (request, response, next) => {
       response.status(404).json({ error: "Journal entry not found." });
       return;
     }
+    response.set("Cache-Control", "public, max-age=60, stale-while-revalidate=300");
     response.json({ post: result.rows[0] });
   } catch (error) {
     next(error);
@@ -331,6 +373,7 @@ app.post("/api/admin/blogs", requireAdmin, async (request, response, next) => {
         post.published_at ?? null,
       ],
     );
+    invalidatePublicBlogCache();
     response.status(201).json({ post: result.rows[0] });
   } catch (error) {
     next(error);
@@ -387,6 +430,7 @@ app.put(
       await removeStoredUploads(
         previousImages.filter((url) => !retainedImages.has(url)),
       );
+      invalidatePublicBlogCache();
       response.json({ post: result.rows[0] });
     } catch (error) {
       next(error);
@@ -415,6 +459,7 @@ app.delete(
         result.rows[0].image_url,
         ...(result.rows[0].gallery_images ?? []),
       ]);
+      invalidatePublicBlogCache();
       response.status(204).end();
     } catch (error) {
       next(error);
@@ -479,6 +524,9 @@ app.use(
 );
 
 await initializeDatabase();
-app.listen(port, () =>
-  console.log(`Alkutbi API listening on http://localhost:${port}`),
-);
+app.listen(port, () => {
+  console.log(`Alkutbi API listening on http://localhost:${port}`);
+  void getPublicBlogSummaries().catch((error) => {
+    console.error("Unable to warm the public journal cache:", error);
+  });
+});

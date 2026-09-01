@@ -22,3 +22,16 @@ export type BlogInput = Omit<BlogPost, 'id' | 'created_at' | 'updated_at'> & {
   published_at?: string | null;
 };
 
+
+export type BlogSummary = Pick<
+  BlogPost,
+  | 'id'
+  | 'slug'
+  | 'title_ar'
+  | 'title_en'
+  | 'excerpt_ar'
+  | 'excerpt_en'
+  | 'image_url'
+  | 'published_at'
+  | 'created_at'
+>;

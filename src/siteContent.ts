@@ -36,7 +36,7 @@ export const content = {
       ],
     },
     services: {
-      kicker: "02 منظومة الخدمات",
+      kicker: "منظومة الخدمات",
       title: "كل ما تحتاجه في رحلتك، تحت سقف واحد",
       cards: [
         {
@@ -390,7 +390,7 @@ export const content = {
         "تم تجهيز طلبك. سيتم فتح واتساب لإرسال الطلب إلى +966 12 542 6662.",
     },
     testimonialsContact: {
-      kicker: "10 — آراء العملاء وقنوات التواصل",
+      kicker: "آراء العملاء وقنوات التواصل",
       title: "ماذا قال ضيوفنا؟",
       testimonials: [
         {
@@ -474,7 +474,7 @@ export const content = {
       ],
     },
     services: {
-      kicker: "02 — Services",
+      kicker: "Services",
       title: "Everything You Need for Your Journey, Under One Roof",
       subtitle: "",
       cards: [
@@ -501,7 +501,7 @@ export const content = {
       ],
     },
     visa: {
-      kicker: "03 — Umrah Visa Request",
+      kicker: "Umrah Visa Request",
       title: "Umrah Visa   In Just Three Steps",
       subtitle:
         "No complexity, no long waits. Submit your request through our platform and we handle the rest immediately.",
@@ -527,7 +527,7 @@ export const content = {
       ],
     },
     transport: {
-      kicker: "07 — Fleet",
+      kicker: "Fleet",
       title: "Our Fleet — Comfort in Every Transfer",
       subtitle:
         "Modern, well-equipped vehicles for seamless transfers between the airport, Haram, and key sites.",
@@ -595,7 +595,7 @@ export const content = {
       ],
     },
     offers: {
-      kicker: "08 — Seasonal Offers",
+      kicker: "Seasonal Offers",
       title: "Offers You Don't Want to Miss",
       subtitle:
         "Special packages for key seasons — book before the offer ends.",
@@ -615,7 +615,7 @@ export const content = {
       ],
     },
     discover: {
-      kicker: "09 — Discover Saudi Arabia",
+      kicker: "Discover Saudi Arabia",
       title: "Discover Saudi Arabia",
       subtitle:
         "Beyond the Two Holy Mosques — a land of unmatched history and civilization.",
@@ -669,10 +669,10 @@ export const content = {
       added: "Added",
     },
     planner: {
-      kicker: "06 — Make Your Trip",
+      kicker: "Make Your Trip",
       title: "Build Your Own Trip",
       subtitle: "A tailor-made Umrah experience — you choose, we deliver.",
-      packagesKicker: "04 — Packages",
+      packagesKicker: "Packages",
       modePackages: "Choose a Package",
       modeCustom: "Build Your Own Trip",
       packagesTitle: "Choose the Package That Suits You",
@@ -834,7 +834,7 @@ export const content = {
         "Your request is ready. WhatsApp will open to send it to +966 12 542 6662.",
     },
     testimonialsContact: {
-      kicker: "10 — Testimonials & Contact",
+      kicker: "Testimonials & Contact",
       title: "What Our Guests Say",
       testimonials: [
         {
