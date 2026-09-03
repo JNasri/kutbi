@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import type { Language } from "../siteContent";
 import type { BlogSummary } from "../types/blog";
-import { getPublishedPosts } from "../lib/blogs";
+import { getHeroPosts } from "../lib/blogs";
 
 const fallbackPosts: BlogSummary[] = [
   {
@@ -41,10 +41,16 @@ export default function BlogCarousel({ language }: { language: Language }) {
 
   useEffect(() => {
     let cancelled = false;
-    getPublishedPosts()
+    getHeroPosts()
       .then((publishedPosts) => {
         if (!cancelled) {
-          setPosts(publishedPosts.length > 0 ? publishedPosts.slice(0, 6) : fallbackPosts);
+          const selectedPosts = publishedPosts.length > 0 ? publishedPosts : fallbackPosts;
+          setPosts(selectedPosts);
+          selectedPosts.forEach(({ image_url }) => {
+            const image = new Image();
+            image.decoding = "async";
+            image.src = image_url;
+          });
         }
       })
       .catch(() => {
@@ -89,7 +95,7 @@ export default function BlogCarousel({ language }: { language: Language }) {
     >
       <Link className="hero-blog-link" to={destination} aria-label={title}>
         <div className="hero-blog-image" key={`${post.id}-image`}>
-          <img src={post.image_url} alt={title} decoding="async" fetchPriority="high" />
+          <img src={post.image_url} alt={title} decoding="async" loading="eager" fetchPriority="high" />
           <span>{language === "ar" ? "\u0645\u0646 \u0645\u062c\u0644\u062a\u0646\u0627" : "From our journal"}</span>
         </div>
         <div className="hero-blog-copy" key={`${post.id}-copy`}>
