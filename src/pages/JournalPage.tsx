@@ -37,7 +37,15 @@ export default function JournalPage({ language }: { language: Language }) {
   useEffect(() => {
     let active = true;
     getPublishedPosts()
-      .then((nextPosts) => { if (active) setPosts(nextPosts); })
+      .then((nextPosts) => {
+        if (active) {
+          setPosts([...nextPosts].sort((a, b) => {
+            const aDate = Date.parse(a.published_at ?? a.created_at ?? "") || 0;
+            const bDate = Date.parse(b.published_at ?? b.created_at ?? "") || 0;
+            return bDate - aDate;
+          }));
+        }
+      })
       .catch(() => { if (active) setFailed(true); })
       .finally(() => { if (active) setLoading(false); });
     return () => { active = false; };

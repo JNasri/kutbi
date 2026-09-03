@@ -288,7 +288,7 @@ async function getPublicBlogSummaries() {
               image_url, published_at, created_at
        FROM blog_posts
        WHERE status = 'published'
-       ORDER BY published_at DESC NULLS LAST, created_at DESC
+       ORDER BY COALESCE(published_at, created_at) DESC
        LIMIT 100`,
     ).then((result) => {
       publicBlogCache = {
@@ -304,10 +304,36 @@ async function getPublicBlogSummaries() {
   return publicBlogRequest;
 }
 
-app.get("/api/blogs", async (_request, response, next) => {
+function pickRandomPosts(posts: PublicBlogSummary[], count: number) {
+  const candidates = [...posts];
+  const selectionSize = Math.min(count, candidates.length);
+
+  for (let index = 0; index < selectionSize; index += 1) {
+    const randomIndex = index + Math.floor(Math.random() * (candidates.length - index));
+    [candidates[index], candidates[randomIndex]] = [candidates[randomIndex], candidates[index]];
+  }
+
+  return candidates.slice(0, selectionSize);
+}
+
+app.get("/api/blogs", async (request, response, next) => {
   try {
-    const posts = await getPublicBlogSummaries();
-    response.set("Cache-Control", "public, max-age=30, stale-while-revalidate=300");
+    const allPosts = await getPublicBlogSummaries();
+    const requestedLimit = Number.parseInt(String(request.query.limit ?? ""), 10);
+    const limit = Number.isFinite(requestedLimit)
+      ? Math.min(Math.max(requestedLimit, 1), 100)
+      : allPosts.length;
+    const randomize = request.query.random === "true";
+    const posts = randomize
+      ? pickRandomPosts(allPosts, limit)
+      : allPosts.slice(0, limit);
+
+    response.set(
+      "Cache-Control",
+      randomize
+        ? "private, max-age=30"
+        : "public, max-age=30, stale-while-revalidate=300",
+    );
     response.json({ posts });
   } catch (error) {
     next(error);
