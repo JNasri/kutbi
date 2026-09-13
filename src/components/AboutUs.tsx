@@ -1,4 +1,4 @@
-import Logo from './Logo';
+import Logo from "./Logo";
 
 type AboutCopy = {
   kicker: string;
@@ -13,7 +13,9 @@ export default function AboutUs({ copy }: { copy: AboutCopy }) {
   return (
     <section id="about" className="about-page" aria-labelledby="about-title">
       <div className="about-pattern" aria-hidden="true" />
-      <div className="about-watermark" aria-hidden="true"><Logo decorative /></div>
+      <div className="about-watermark" aria-hidden="true">
+        <Logo decorative />
+      </div>
 
       <div className="about-shell content-wrap">
         <header className="about-heading">
@@ -23,7 +25,9 @@ export default function AboutUs({ copy }: { copy: AboutCopy }) {
         </header>
 
         <div className="about-story">
-          <span className="about-dropcap" aria-hidden="true">{copy.mark}</span>
+          <span className="about-dropcap" aria-hidden="true">
+            {copy.mark}
+          </span>
           <p>{copy.body}</p>
         </div>
 

@@ -6,6 +6,7 @@ import {
   type MouseEvent,
 } from "react";
 import { createPortal } from "react-dom";
+import DateRangePicker from "./DateRangePicker";
 import { whatsappNumber, whatsappUrl } from "../contact";
 
 type TripStep = {
@@ -17,6 +18,7 @@ type TripStep = {
   options?: readonly string[];
 };
 type PackageCopy = {
+  image: string;
   id: string;
   name: string;
   label: string;
@@ -28,12 +30,10 @@ type PackageCopy = {
   cta: string;
   featured?: boolean;
 };
-type DiscoverCopy = {
-  categories: readonly {
-    id: string;
-    label: string;
-    items: readonly { name: string }[];
-  }[];
+type ExtraDestinationGroup = {
+  id: string;
+  label: string;
+  options: readonly string[];
 };
 type TransportCopy = {
   cards: readonly {
@@ -61,6 +61,9 @@ type PlannerCopy = {
     company: string;
     phone: string;
     email: string;
+    date: string;
+    datePlaceholder: string;
+    dateRequired: string;
     notes: string;
     notesPlaceholder: string;
     send: string;
@@ -68,6 +71,13 @@ type PlannerCopy = {
     detailLabels: readonly string[];
     detailValues: Readonly<Record<string, readonly string[]>>;
   };
+  extraDestinationGroups: readonly ExtraDestinationGroup[];
+  calendarLocale: string;
+  staySelectPeriod: string;
+  stayPeriodRequired: string;
+  stayFrom: string;
+  stayTo: string;
+  stayDaysUnit: string;
   steps: readonly TripStep[];
   submit: string;
   note: string;
@@ -75,6 +85,16 @@ type PlannerCopy = {
 };
 type FormValues = Record<string, string>;
 export type PlannerMode = "packages" | "custom";
+
+function calculateInclusiveDays(from: string, to: string) {
+  if (!from || !to) return 0;
+  const [fromYear, fromMonth, fromDay] = from.split("-").map(Number);
+  const [toYear, toMonth, toDay] = to.split("-").map(Number);
+  const start = Date.UTC(fromYear, fromMonth - 1, fromDay);
+  const end = Date.UTC(toYear, toMonth - 1, toDay);
+  if (end < start) return 0;
+  return Math.floor((end - start) / 86_400_000) + 1;
+}
 
 function openWhatsApp(summary: string) {
   window.open(
@@ -86,13 +106,11 @@ function openWhatsApp(summary: string) {
 
 export default function TripPlanner({
   copy,
-  discover,
   transport,
   mode,
   onModeChange,
 }: {
   copy: PlannerCopy;
-  discover: DiscoverCopy;
   transport: TransportCopy;
   mode: PlannerMode;
   onModeChange: (mode: PlannerMode) => void;
@@ -105,6 +123,7 @@ export default function TripPlanner({
   const [status, setStatus] = useState("");
   const [activePackage, setActivePackage] = useState<PackageCopy | null>(null);
   const [modalStatus, setModalStatus] = useState("");
+  const [packageDate, setPackageDate] = useState("");
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const destinationDetailsRef = useRef<HTMLDetailsElement>(null);
 
@@ -148,14 +167,39 @@ export default function TripPlanner({
     };
   }, []);
 
+  const stayDayCount = calculateInclusiveDays(
+    values.daysFrom ?? "",
+    values.daysTo ?? "",
+  );
+
   const submitCustomTrip = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!stayDayCount) {
+      setStatus(copy.stayPeriodRequired);
+      const trigger = document.getElementById("trip-step-days-trigger");
+      if (trigger?.parentElement instanceof HTMLDetailsElement)
+        trigger.parentElement.open = true;
+      trigger?.focus();
+      return;
+    }
+    setStatus("");
     const summary = copy.steps
       .map((step) => {
         const value =
           step.field === "extras"
             ? [...extraDestinations].join(", ")
-            : values[step.field];
+            : step.field === "days"
+              ? [
+                  values.daysFrom || "-",
+                  " — ",
+                  values.daysTo || "-",
+                  " (",
+                  stayDayCount || "-",
+                  " ",
+                  copy.stayDaysUnit,
+                  ")",
+                ].join("")
+              : values[step.field];
         return `${step.label}: ${value || "-"}`;
       })
       .join("\n");
@@ -178,6 +222,7 @@ export default function TripPlanner({
       `${copy.packageModal.company}: ${form.get("company") || "-"}`,
       `${copy.packageModal.phone}: ${form.get("phone") || "-"}`,
       `${copy.packageModal.email}: ${form.get("email") || "-"}`,
+      copy.packageModal.date + ": " + packageDate,
       `${copy.packageModal.notes}: ${form.get("notes") || "-"}`,
     ].join("\n");
     if (whatsappNumber) openWhatsApp(summary);
@@ -202,10 +247,9 @@ export default function TripPlanner({
       return next;
     });
 
-  const selectedDestinationNames = discover.categories.flatMap((category) =>
-    category.items
-      .filter((item) => extraDestinations.has(item.name))
-      .map((item) => item.name),
+  const selectedDestinationNames = copy.extraDestinationGroups.flatMap(
+    (category) =>
+      category.options.filter((name) => extraDestinations.has(name)),
   );
 
   return (
@@ -251,22 +295,21 @@ export default function TripPlanner({
           role="tabpanel"
         >
           <div className="package-grid">
-            {copy.packages.map((packageItem, index) => (
+            {copy.packages.map((packageItem) => (
               <article
                 className={`package-card ${packageItem.featured ? "featured" : ""} ${selectedPackage === packageItem.id ? "selected" : ""}`}
                 key={packageItem.id}
               >
-                {packageItem.featured ? (
-                  <span className="package-ribbon">{packageItem.label}</span>
-                ) : null}
-                <div className="package-card-top">
-                  <small>0{index + 1}</small>
-                  <span>{packageItem.featured ? "◆" : "◇"}</span>
-                </div>
-                <p>
-                  {packageItem.featured ? copy.modePackages : packageItem.label}
-                </p>
-                <h4>{packageItem.name}</h4>
+                <img
+                  className="package-card-artwork"
+                  src={packageItem.image}
+                  alt={packageItem.name}
+                  width={1254}
+                  height={1254}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div className="package-card-details">
                 <strong
                   className="package-price"
                   aria-label={`${packageItem.pricePrefix} ${packageItem.price} ${packageItem.priceLabel}`}
@@ -300,6 +343,7 @@ export default function TripPlanner({
                   {packageItem.cta}
                   <span>↗</span>
                 </button>
+                </div>
               </article>
             ))}
           </div>
@@ -328,8 +372,33 @@ export default function TripPlanner({
               return (
                 <div className={`trip-step step-${index + 1}`} key={step.field}>
                   <span className="step-number">{step.number}</span>
-                  <strong id={labelId}>{step.label}</strong>
-                  {step.field === "extras" ? (
+                  <strong id={labelId}>
+                    {step.label}
+                    {step.field === "days" && stayDayCount ? (
+                      <span className="stay-day-count">
+                        {stayDayCount} {copy.stayDaysUnit}
+                      </span>
+                    ) : null}
+                  </strong>
+                  {step.field === "days" ? (
+                    <DateRangePicker
+                      from={values.daysFrom ?? ""}
+                      to={values.daysTo ?? ""}
+                      labelId={labelId}
+                      locale={copy.calendarLocale}
+                      placeholder={copy.staySelectPeriod}
+                      fromLabel={copy.stayFrom}
+                      toLabel={copy.stayTo}
+                      onChange={(daysFrom, daysTo) => {
+                        setValues((current) => ({
+                          ...current,
+                          daysFrom,
+                          daysTo,
+                        }));
+                        setStatus("");
+                      }}
+                    />
+                  ) : step.field === "extras" ? (
                     <details
                       ref={destinationDetailsRef}
                       className="destination-multiselect"
@@ -343,19 +412,17 @@ export default function TripPlanner({
                         <b aria-hidden="true">⌄</b>
                       </summary>
                       <div className="destination-options">
-                        {discover.categories.map((category) => (
+                        {copy.extraDestinationGroups.map((category) => (
                           <fieldset key={category.id}>
                             <legend>{category.label}</legend>
-                            {category.items.map((item) => (
-                              <label key={item.name}>
+                            {category.options.map((name) => (
+                              <label key={name}>
                                 <input
                                   type="checkbox"
-                                  checked={extraDestinations.has(item.name)}
-                                  onChange={() =>
-                                    toggleExtraDestination(item.name)
-                                  }
+                                  checked={extraDestinations.has(name)}
+                                  onChange={() => toggleExtraDestination(name)}
                                 />
-                                <span>{item.name}</span>
+                                <span>{name}</span>
                               </label>
                             ))}
                           </fieldset>
@@ -523,6 +590,25 @@ export default function TripPlanner({
                           required
                         />
                       </label>
+                      <div className="package-date-field">
+                        <span id="package-travel-date">
+                          {copy.packageModal.date}
+                        </span>
+                        <DateRangePicker
+                          single
+                          from={packageDate}
+                          to=""
+                          labelId="package-travel-date"
+                          locale={copy.calendarLocale}
+                          placeholder={copy.packageModal.datePlaceholder}
+                          fromLabel={copy.packageModal.datePlaceholder}
+                          toLabel=""
+                          onChange={(date) => {
+                            setPackageDate(date);
+                            setModalStatus("");
+                          }}
+                        />
+                      </div>
                       <label className="package-notes-field">
                         <span>{copy.packageModal.notes}</span>
                         <textarea

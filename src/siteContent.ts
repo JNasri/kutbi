@@ -37,7 +37,7 @@ export const content = {
     },
     services: {
       kicker: "منظومة الخدمات",
-      title: "كل ما تحتاجه في رحلتك، تحت سقف واحد",
+      title: "نحن بجانبك طوال رحلتك",
       cards: [
         {
           image: "/images/service-umrah-visa.jpeg",
@@ -183,9 +183,9 @@ export const content = {
           label: "دينية",
           description: "تجوّل في أقدس البقاع وأكثرها أثراً في تاريخ الإسلام.",
           items: [
-            { name: "المسجد الحرام", index: 0 },
-            { name: "المسجد النبوي", index: 1 },
-            { name: "جبل النور", index: 2 },
+            { name: "حي حراء الثقافي", index: 0 },
+            { name: "متحف برج الساعة", index: 1 },
+            { name: "متحف عمارة الحرمين", index: 2 },
           ],
         },
         {
@@ -225,6 +225,29 @@ export const content = {
       added: "تمت الإضافة",
     },
     planner: {
+      // Edit these groups and options independently from Discover Saudi Arabia.
+      extraDestinationGroups: [
+        {
+          id: "religious",
+          label: "دينية",
+          options: ["حي حراء الثقافي", "متحف برج الساعة", "متحف عمارة الحرمين"],
+        },
+        {
+          id: "heritage",
+          label: "تراثية",
+          options: ["الحِجر في العلا", "الدرعية التاريخية", "جدة التاريخية"],
+        },
+        {
+          id: "tourism",
+          label: "سياحية",
+          options: ["الرياض", "أبها", "جازان", "الطائف"],
+        },
+        {
+          id: "culture",
+          label: "ثقافية",
+          options: ["مركز إثراء", "الأسواق الشعبية", "المتحف الوطني"],
+        },
+      ],
       kicker: "مصمّم الرحلات",
       title: "اصنع رحلتك بنفسك",
       subtitle: "رحلة عمرة على مقاسك — أنت تختار، ونحن ننفّذ.",
@@ -237,7 +260,8 @@ export const content = {
       packages: [
         {
           id: "package-1",
-          name: "الباقة 1",
+          image: "/images/package-silver.jpeg",
+          name: "الباقة الفضية",
           label: "زهرة الفرسان • المدينة الجديد",
           price: "761",
           pricePrefix: "ابتداءً من",
@@ -249,12 +273,13 @@ export const content = {
             "3 ليالٍ في المدينة — المدينة الجديد",
             "التأشيرة والنقل والفنادق والإعاشة مشمولة",
           ],
-          cta: "اختر الباقة 1",
+          cta: "اختر الباقة الفضية",
         },
 
         {
           id: "package-2",
-          name: "الباقة 2",
+          image: "/images/package-gold.jpeg",
+          name: "الباقة الذهبية",
           label: "إيلاف الخير • سلسبيل الفضي",
           price: "953",
           pricePrefix: "ابتداءً من",
@@ -266,11 +291,12 @@ export const content = {
             "3 ليالٍ في المدينة — سلسبيل الفضي",
             "التأشيرة والنقل والفنادق والإعاشة مشمولة",
           ],
-          cta: "اختر الباقة 2",
+          cta: "اختر الباقة الذهبية",
         },
         {
           id: "package-3",
-          name: "الباقة 3",
+          image: "/images/package-diamond.jpeg",
+          name: "الباقة الماسية",
           label: "مكارم الهجرة • طابة السلام",
           price: "833",
           pricePrefix: "ابتداءً من",
@@ -282,11 +308,12 @@ export const content = {
             "3 ليالٍ في المدينة — طابة السلام",
             "التأشيرة والنقل والفنادق والإعاشة مشمولة",
           ],
-          cta: "اختر الباقة 3",
+          cta: "اختر الباقة الماسية",
         },
         {
           id: "package-4",
-          name: "الباقة 4",
+          image: "/images/package-platinum.jpeg",
+          name: "الباقة البلاتينية",
           label: "الأقرب إلى الحرم",
           price: "1,761",
           pricePrefix: "ابتداءً من",
@@ -298,7 +325,7 @@ export const content = {
             "3 ليالٍ في المدينة — المنا كريم",
             "التأشيرة والنقل والفنادق والإعاشة مشمولة",
           ],
-          cta: "اختر الباقة 4",
+          cta: "اختر الباقة البلاتينية",
           featured: true,
         },
       ],
@@ -314,6 +341,9 @@ export const content = {
         company: "اسم الشركة",
         phone: "رقم الهاتف",
         email: "البريد الإلكتروني",
+        date: "تاريخ السفر",
+        datePlaceholder: "اختر تاريخ السفر",
+        dateRequired: "يرجى اختيار تاريخ السفر.",
         notes: "ملاحظات",
         notesPlaceholder: "التواريخ المتوقعة، عدد المسافرين، أو أي طلبات خاصة…",
         send: "إرسال الطلب",
@@ -342,6 +372,12 @@ export const content = {
           ],
         },
       },
+      calendarLocale: "ar-SA",
+      staySelectPeriod: "اختر فترة الإقامة",
+      stayPeriodRequired: "يرجى اختيار تاريخ بداية ونهاية الإقامة.",
+      stayFrom: "من",
+      stayTo: "إلى",
+      stayDaysUnit: "أيام",
       steps: [
         {
           number: "١",
@@ -626,9 +662,9 @@ export const content = {
           description:
             "Walk through the holiest and most historically significant sites in Islam.",
           items: [
-            { name: "The Grand Mosque", index: 0 },
-            { name: "The Prophet’s Mosque", index: 1 },
-            { name: "Jabal al-Noor", index: 2 },
+            { name: "Hira's Culture District", index: 0 },
+            { name: "Clocktower Museum", index: 1 },
+            { name: "Haramain Museum", index: 2 },
           ],
         },
         {
@@ -669,6 +705,33 @@ export const content = {
       added: "Added",
     },
     planner: {
+      // Edit these groups and options independently from Discover Saudi Arabia.
+      extraDestinationGroups: [
+        {
+          id: "religious",
+          label: "Religious",
+          options: [
+            "Hira's Culture District",
+            "Clocktower's Museum",
+            "Haramen Museum",
+          ],
+        },
+        {
+          id: "heritage",
+          label: "Heritage",
+          options: ["Hegra, AlUla", "Historic Diriyah", "Historic Jeddah"],
+        },
+        {
+          id: "tourism",
+          label: "Tourism",
+          options: ["Riyadh", "Abha", "Jazan", "Taif"],
+        },
+        {
+          id: "culture",
+          label: "Culture",
+          options: ["Ithra", "Traditional souqs", "National Museum"],
+        },
+      ],
       kicker: "Make Your Trip",
       title: "Build Your Own Trip",
       subtitle: "A tailor-made Umrah experience — you choose, we deliver.",
@@ -681,7 +744,8 @@ export const content = {
       packages: [
         {
           id: "package-1",
-          name: "Package 1",
+          image: "/images/package-silver.jpeg",
+          name: "Silver Package",
           label: "Elaf Al-Khair • Salsabeel Al-Fadhi",
           price: "953",
           pricePrefix: "Starting from",
@@ -693,11 +757,12 @@ export const content = {
             "3 nights in Madinah — Salsabeel Al-Fadhi",
             "Visa, transportation, hotels, and catering included",
           ],
-          cta: "Choose Package 1",
+          cta: "Choose Silver Package",
         },
         {
           id: "package-2",
-          name: "Package 2",
+          image: "/images/package-gold.jpeg",
+          name: "Gold Package",
           label: "Zahra Al-Fursan • Al Madinah Al Jadeed",
           price: "761",
           pricePrefix: "Starting from",
@@ -709,11 +774,12 @@ export const content = {
             "3 nights in Madinah — Al Madinah Al Jadeed",
             "Visa, transportation, hotels, and catering included",
           ],
-          cta: "Choose Package 2",
+          cta: "Choose Gold Package",
         },
         {
           id: "package-3",
-          name: "Package 3",
+          image: "/images/package-diamond.jpeg",
+          name: "Diamond Package",
           label: "Makarem Al-Hijra • Taba Al Salam",
           price: "833",
           pricePrefix: "Starting from",
@@ -725,11 +791,12 @@ export const content = {
             "3 nights in Madinah — Taba Al Salam",
             "Visa, transportation, hotels, and catering included",
           ],
-          cta: "Choose Package 3",
+          cta: "Choose Diamond Package",
         },
         {
           id: "package-4",
-          name: "Package 4",
+          image: "/images/package-platinum.jpeg",
+          name: "Platinum Package",
           label: "Closest to the Haram",
           price: "1,761",
           pricePrefix: "Starting from",
@@ -741,7 +808,7 @@ export const content = {
             "3 nights in Madinah — Al Mana Kareem",
             "Visa, transportation, hotels, and catering included",
           ],
-          cta: "Choose Package 4",
+          cta: "Choose Platinum Package",
           featured: true,
         },
       ],
@@ -757,6 +824,9 @@ export const content = {
         company: "Company name",
         phone: "Phone number",
         email: "Email address",
+        date: "Travel date",
+        datePlaceholder: "Choose a travel date",
+        dateRequired: "Please select a travel date.",
         notes: "Notes",
         notesPlaceholder:
           "Expected dates, number of travellers, or any special requests…",
@@ -786,6 +856,12 @@ export const content = {
           ],
         },
       },
+      calendarLocale: "en-GB",
+      staySelectPeriod: "Choose your stay period",
+      stayPeriodRequired: "Please select the start and end dates of your stay.",
+      stayFrom: "From",
+      stayTo: "To",
+      stayDaysUnit: "days",
       steps: [
         {
           number: "1",
