@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import type { CSSProperties } from "react";
 
 type Offer = { title: string; text: string };
 type OffersCopy = {
@@ -8,7 +8,7 @@ type OffersCopy = {
   offers: readonly Offer[];
 };
 
-const offerPositions = ['0% 0%', '66.666% 100%', '33.333% 50%'];
+const offerPositions = ["0% 0%", "66.666% 100%", "33.333% 50%"];
 
 export default function SeasonalOffers({ copy }: { copy: OffersCopy }) {
   return (
@@ -24,7 +24,9 @@ export default function SeasonalOffers({ copy }: { copy: OffersCopy }) {
           <article
             className={`offer-card offer-card-${index + 1}`}
             key={offer.title}
-            style={{ '--offer-position': offerPositions[index] } as CSSProperties}
+            style={
+              { "--offer-position": offerPositions[index] } as CSSProperties
+            }
           >
             <div className="offer-card-image" aria-hidden="true" />
             <div className="offer-card-copy">
