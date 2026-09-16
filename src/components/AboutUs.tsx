@@ -26,7 +26,7 @@ export default function AboutUs({ copy }: { copy: AboutCopy }) {
 
         <div className="about-story">
           <span className="about-dropcap" aria-hidden="true">
-            {copy.mark}
+            {/* {copy.mark} */}
           </span>
           <p>{copy.body}</p>
         </div>
