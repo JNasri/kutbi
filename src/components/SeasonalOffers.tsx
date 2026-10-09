@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 
-type Offer = { title: string; text: string };
+type Offer = { title: string; text: string; image?: string };
 type OffersCopy = {
   kicker: string;
   title: string;
@@ -28,7 +28,7 @@ export default function SeasonalOffers({ copy }: { copy: OffersCopy }) {
               { "--offer-position": offerPositions[index] } as CSSProperties
             }
           >
-            <div className="offer-card-image" aria-hidden="true" />
+            <div className="offer-card-image" aria-hidden="true" style={offer.image ? { backgroundImage: `url(${offer.image})`, backgroundSize: "cover", backgroundPosition: "center" } : undefined} />
             <div className="offer-card-copy">
               <small>0{index + 1}</small>
               <h3>{offer.title}</h3>

@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import type { Language } from "../siteContent";
 import type { BlogSummary } from "../types/blog";
 import { getHeroPosts } from "../lib/blogs";
+import LoadingSpinner from "./LoadingSpinner";
 
 const fallbackPosts: BlogSummary[] = [
   {
@@ -75,7 +76,7 @@ export default function BlogCarousel({ language }: { language: Language }) {
         aria-label={language === "ar" ? "\u062c\u0627\u0631\u064d \u062a\u062d\u0645\u064a\u0644 \u0623\u062d\u062f\u062b \u0627\u0644\u0642\u0635\u0635" : "Loading latest stories"}
         aria-busy="true"
       >
-        <div className="hero-blog-loading-image" />
+        <div className="hero-blog-loading-image"><LoadingSpinner label={language === "ar" ? "جارٍ تحميل اليوميات…" : "Loading journals…"} compact inverse /></div>
         <div className="hero-blog-loading-copy"><i /><i /><i /></div>
       </aside>
     );

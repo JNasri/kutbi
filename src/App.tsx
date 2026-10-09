@@ -1,11 +1,14 @@
-import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
+﻿import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router';
 import { content, type Language } from './siteContent';
 import Header, { type Theme } from './components/Header';
 import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
+import LoadingSpinner from './components/LoadingSpinner';
 import type { PlannerMode } from './components/TripPlanner';
 import { preloadHeroPosts, preloadPublishedPosts } from './lib/blogs';
+import { getTravelContent } from './lib/siteContentApi';
+import type { TravelContent } from './types/siteContent';
 
 const Hero = lazy(() => import('./components/Hero'));
 const AboutUs = lazy(() => import('./components/AboutUs'));
@@ -35,7 +38,27 @@ function MarketingSite() {
   const location = useLocation();
   const navigate = useNavigate();
   const [plannerMode, setPlannerMode] = useState<PlannerMode>(() => new URLSearchParams(window.location.search).get('mode') === 'custom' ? 'custom' : 'packages');
-  const copy = content[language];
+  const [travelContent, setTravelContent] = useState<TravelContent | null>(null);
+  useEffect(() => { void getTravelContent().then(setTravelContent).catch(() => undefined); }, []);
+  const copy = useMemo(() => {
+    const base = content[language];
+    if (!travelContent) return base;
+    const packages = travelContent.packages.map(({ key, data }) => ({
+      id:key, image:data.image_url, name:language === 'ar' ? data.name_ar : data.name_en,
+      label:language === 'ar' ? data.label_ar : data.label_en, price:data.price,
+      pricePrefix:language === 'ar' ? data.price_prefix_ar : data.price_prefix_en,
+      priceLabel:language === 'ar' ? data.price_label_ar : data.price_label_en,
+      description:language === 'ar' ? data.description_ar : data.description_en,
+      features:language === 'ar' ? data.features_ar : data.features_en,
+      cta:language === 'ar' ? data.cta_ar : data.cta_en, featured:data.featured,
+    }));
+    const offers = travelContent.offers.map(({ data }) => ({
+      title:language === 'ar' ? data.title_ar : data.title_en,
+      text:language === 'ar' ? data.text_ar : data.text_en,
+      image:data.image_url,
+    }));
+    return { ...base, planner:{ ...base.planner, packages }, offers:{ ...base.offers, offers } };
+  }, [language, travelContent]);
 
   const changePlannerMode = useCallback((mode: PlannerMode) => {
     setPlannerMode(mode);
@@ -110,7 +133,7 @@ function MarketingSite() {
 
 export default function App() {
   return (
-    <Suspense fallback={<div className="route-loader">Loading…</div>}>
+    <Suspense fallback={<LoadingSpinner label="Loading… / جارٍ التحميل…" fullPage />}>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
@@ -120,3 +143,5 @@ export default function App() {
     </Suspense>
   );
 }
+
+

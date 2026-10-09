@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import LoadingSpinner from "../components/LoadingSpinner";
 import { getPublishedPosts } from "../lib/blogs";
 import type { Language } from "../siteContent";
 import type { BlogSummary } from "../types/blog";
@@ -64,7 +65,7 @@ export default function JournalPage({ language }: { language: Language }) {
         </div>
       </header>
 
-      {loading ? <div className="journal-state content-wrap" aria-label="Loading"><i /><i /><i /><i /></div> : null}
+      {loading ? <div className="journal-state content-wrap" aria-label="Loading"><i /><i /><i /><i /><LoadingSpinner label={language === "ar" ? "جارٍ تحميل اليوميات…" : "Loading journals…"} /></div> : null}
       {!loading && failed ? <p className="journal-message content-wrap" role="alert">{copy.error}</p> : null}
       {!loading && !failed && posts.length === 0 ? <p className="journal-message content-wrap">{copy.empty}</p> : null}
 

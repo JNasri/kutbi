@@ -1,17 +1,18 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import { apiRequest } from '../lib/api';
+import LoadingSpinner from '../components/LoadingSpinner';
 import type { Language } from '../siteContent';
 import type { BlogPost } from '../types/blog';
 
 const labels = {
   ar: {
-    journal: 'مجلة الكتبي',
-    back: 'العودة إلى المجلة',
-    gallery: 'من الحدث',
-    published: 'نُشر في',
-    story: 'قصة من مجموعة الكتبي',
-    error: 'لم نتمكن من العثور على هذه القصة.',
+    journal: 'ظ…ط¬ظ„ط© ط§ظ„ظƒطھط¨ظٹ',
+    back: 'ط§ظ„ط¹ظˆط¯ط© ط¥ظ„ظ‰ ط§ظ„ظ…ط¬ظ„ط©',
+    gallery: 'ظ…ظ† ط§ظ„ط­ط¯ط«',
+    published: 'ظ†ظڈط´ط± ظپظٹ',
+    story: 'ظ‚طµط© ظ…ظ† ظ…ط¬ظ…ظˆط¹ط© ط§ظ„ظƒطھط¨ظٹ',
+    error: 'ظ„ظ… ظ†طھظ…ظƒظ† ظ…ظ† ط§ظ„ط¹ط«ظˆط± ط¹ظ„ظ‰ ظ‡ط°ظ‡ ط§ظ„ظ‚طµط©.',
   },
   en: {
     journal: 'Alkutbi Journal',
@@ -57,7 +58,7 @@ export default function JournalArticlePage({ language }: { language: Language })
     if (title) document.title = `${title} | ${copy.journal}`;
   }, [copy.journal, title]);
 
-  if (loading) return <section className="journal-article routed-page"><div className="journal-article-loading" aria-label="Loading" /></section>;
+  if (loading) return <section className="journal-article routed-page"><div className="journal-article-loading"><LoadingSpinner label={language === 'ar' ? 'جارٍ تحميل اليومية…' : 'Loading journal…'} /></div></section>;
   if (!post) return <section className="journal-article routed-page"><div className="journal-not-found content-wrap"><p>{copy.error}</p><Link to="/journal">{copy.back}</Link></div></section>;
 
   const publishedDate = post.published_at ?? post.created_at;
@@ -67,10 +68,10 @@ export default function JournalArticlePage({ language }: { language: Language })
       <header className="article-intro">
         <div className="article-intro-grid content-wrap">
           <div className="article-heading">
-            <Link to="/journal"><span aria-hidden="true">←</span>{copy.journal}</Link>
+            <Link to="/journal"><span aria-hidden="true">â†گ</span>{copy.journal}</Link>
             <div className="article-meta">
               <span>{copy.story}</span>
-              {publishedDate ? <time dateTime={publishedDate}>{copy.published} · {formatDate(publishedDate, language)}</time> : null}
+              {publishedDate ? <time dateTime={publishedDate}>{copy.published} آ· {formatDate(publishedDate, language)}</time> : null}
             </div>
             <h1>{title}</h1>
             <p>{excerpt}</p>
@@ -95,7 +96,7 @@ export default function JournalArticlePage({ language }: { language: Language })
         </section>
       ) : null}
 
-      <footer className="article-back content-wrap"><Link to="/journal"><span aria-hidden="true">←</span>{copy.back}</Link></footer>
+      <footer className="article-back content-wrap"><Link to="/journal"><span aria-hidden="true">â†گ</span>{copy.back}</Link></footer>
     </article>
   );
 }
