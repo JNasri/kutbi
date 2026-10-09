@@ -1,5 +1,6 @@
-import pg from 'pg';
+﻿import pg from 'pg';
 import bcrypt from 'bcryptjs';
+import { defaultEditableContent } from './siteContentDefaults.js';
 
 const { Pool } = pg;
 
@@ -49,8 +50,33 @@ export async function initializeDatabase() {
 
     CREATE INDEX IF NOT EXISTS blog_posts_status_published_idx
       ON blog_posts (status, published_at DESC);
+    CREATE TABLE IF NOT EXISTS site_content_items (
+      id BIGSERIAL PRIMARY KEY,
+      section VARCHAR(30) NOT NULL CHECK (section IN ('packages', 'offers')),
+      content_key VARCHAR(100) NOT NULL,
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      status VARCHAR(20) NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'published')),
+      draft_data JSONB NOT NULL,
+      published_data JSONB,
+      updated_by BIGINT REFERENCES admins(id) ON DELETE SET NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+      UNIQUE (section, content_key)
+    );
+
+    CREATE INDEX IF NOT EXISTS site_content_items_section_order_idx
+      ON site_content_items (section, sort_order);
   `);
 
+  for (const item of defaultEditableContent) {
+    await pool.query(
+      `INSERT INTO site_content_items
+        (section, content_key, sort_order, status, draft_data, published_data)
+       VALUES ($1,$2,$3,'published',$4::jsonb,$4::jsonb)
+       ON CONFLICT (section, content_key) DO NOTHING`,
+      [item.section, item.key, item.sort_order, JSON.stringify(item.data)],
+    );
+  }
   const username = process.env.ADMIN_USERNAME;
   const password = process.env.ADMIN_PASSWORD;
   if (!username || !password) return;
@@ -63,4 +89,5 @@ export async function initializeDatabase() {
     [username.trim().toLowerCase(), passwordHash],
   );
 }
+
 

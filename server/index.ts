@@ -1,4 +1,4 @@
-import "dotenv/config";
+﻿import "dotenv/config";
 import path from "node:path";
 import { mkdir, unlink } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
@@ -15,7 +15,7 @@ import { rateLimit } from "express-rate-limit";
 import { ZodError } from "zod";
 import passport, { requireAdmin } from "./auth.js";
 import { initializeDatabase, pool } from "./db.js";
-import { blogSchema, loginSchema } from "./validation.js";
+import { blogSchema, loginSchema, siteContentItemSchema } from "./validation.js";
 import { deleteFileFromS3, uploadFilesToS3 } from "./scripts/uploadFileToS3.js";
 
 const app = express();
@@ -331,7 +331,7 @@ app.get("/api/blogs", async (request, response, next) => {
     response.set(
       "Cache-Control",
       randomize
-        ? "private, max-age=30"
+        ? "private, no-store"
         : "public, max-age=30, stale-while-revalidate=300",
     );
     response.json({ posts });
@@ -492,6 +492,73 @@ app.delete(
     }
   },
 );
+app.get("/api/site/travel-content", async (_request, response, next) => {
+  try {
+    const result = await pool.query(
+      `SELECT id, section, content_key AS key, sort_order, published_data AS data
+       FROM site_content_items
+       WHERE published_data IS NOT NULL
+       ORDER BY section, sort_order, id`,
+    );
+    response.set("Cache-Control", "public, max-age=30, stale-while-revalidate=300");
+    response.json({
+      packages: result.rows.filter((item) => item.section === "packages"),
+      offers: result.rows.filter((item) => item.section === "offers"),
+    });
+  } catch (error) { next(error); }
+});
+
+app.get("/api/admin/site-content", requireAdmin, async (_request, response, next) => {
+  try {
+    const result = await pool.query(
+      `SELECT id, section, content_key AS key, sort_order, status, draft_data AS data,
+              published_data, created_at, updated_at
+       FROM site_content_items ORDER BY section, sort_order, id`,
+    );
+    response.json({ items: result.rows });
+  } catch (error) { next(error); }
+});
+
+app.post("/api/admin/site-content", requireAdmin, async (request, response, next) => {
+  try {
+    const item = siteContentItemSchema.parse(request.body);
+    const result = await pool.query(
+      `INSERT INTO site_content_items
+        (section, content_key, sort_order, status, draft_data, published_data, updated_by)
+       VALUES ($1,$2,$3,$4,$5::jsonb,CASE WHEN $4='published' THEN $5::jsonb ELSE NULL END,$6)
+       RETURNING id, section, content_key AS key, sort_order, status, draft_data AS data,
+                 published_data, created_at, updated_at`,
+      [item.section, item.key, item.sort_order, item.status, JSON.stringify(item.data), request.user!.id],
+    );
+    response.status(201).json({ item: result.rows[0] });
+  } catch (error) { next(error); }
+});
+
+app.put("/api/admin/site-content/:id", requireAdmin, async (request, response, next) => {
+  try {
+    const item = siteContentItemSchema.parse(request.body);
+    const result = await pool.query(
+      `UPDATE site_content_items SET section=$1, content_key=$2, sort_order=$3, status=$4,
+       draft_data=$5::jsonb,
+       published_data=CASE WHEN $4='published' THEN $5::jsonb ELSE published_data END,
+       updated_by=$6, updated_at=NOW()
+       WHERE id=$7
+       RETURNING id, section, content_key AS key, sort_order, status, draft_data AS data,
+                 published_data, created_at, updated_at`,
+      [item.section, item.key, item.sort_order, item.status, JSON.stringify(item.data), request.user!.id, request.params.id],
+    );
+    if (!result.rows[0]) { response.status(404).json({ error: "Content item not found." }); return; }
+    response.json({ item: result.rows[0] });
+  } catch (error) { next(error); }
+});
+
+app.delete("/api/admin/site-content/:id", requireAdmin, async (request, response, next) => {
+  try {
+    const result = await pool.query("DELETE FROM site_content_items WHERE id=$1 RETURNING id", [request.params.id]);
+    if (!result.rows[0]) { response.status(404).json({ error: "Content item not found." }); return; }
+    response.status(204).end();
+  } catch (error) { next(error); }
+});
 if (isProduction) {
   const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
   const distPath = path.resolve(currentDirectory, "..", "dist");
@@ -556,3 +623,5 @@ app.listen(port, () => {
     console.error("Unable to warm the public journal cache:", error);
   });
 });
+
+
