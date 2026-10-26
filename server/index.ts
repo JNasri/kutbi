@@ -21,6 +21,12 @@ import { deleteFileFromS3, uploadFilesToS3 } from "./scripts/uploadFileToS3.js";
 const app = express();
 const port = Number(process.env.PORT ?? 3001);
 const isProduction = process.env.NODE_ENV === "production";
+const allowedOrigins = new Set(
+  (process.env.PUBLIC_ORIGIN ?? "")
+    .split(",")
+    .map((origin) => origin.trim().replace(/\/+$/, ""))
+    .filter(Boolean),
+);
 const PgSession = connectPgSimple(session);
 const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(currentDirectory, "..");
@@ -131,8 +137,7 @@ app.use((request, response, next) => {
     return;
   }
   const origin = request.get("origin");
-  const allowedOrigin = process.env.PUBLIC_ORIGIN;
-  if (origin && allowedOrigin && origin !== allowedOrigin) {
+  if (origin && allowedOrigins.size > 0 && !allowedOrigins.has(origin)) {
     response.status(403).json({ error: "Origin is not allowed." });
     return;
   }
