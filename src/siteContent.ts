@@ -426,7 +426,7 @@ export const content = {
       submit: "أرسل طلبك — سنتواصل معك فوراً",
       note: "رحلة عمرة على مقاسك — أنت تختار، ونحن ننفّذ.",
       ready:
-        "تم تجهيز طلبك. سيتم فتح واتساب لإرسال الطلب إلى +966 12 542 6662.",
+        "تم تجهيز طلبك. سيتم فتح واتساب لإرسال الطلب إلى 920003198.",
     },
     testimonialsContact: {
       kicker: "آراء العملاء وقنوات التواصل",
@@ -450,7 +450,7 @@ export const content = {
         "البريد الإلكتروني",
         "العنوان",
         "نموذج التواصل",
-        "واتساب: +966 12 542 6662",
+        "واتساب: 920003198",
       ],
       form: {
         name: "الاسم",
@@ -910,7 +910,7 @@ export const content = {
       submit: "Send Your Request — We'll Be in Touch Immediately",
       note: "A tailor-made Umrah experience — you choose, we deliver.",
       ready:
-        "Your request is ready. WhatsApp will open to send it to +966 12 542 6662.",
+        "Your request is ready. WhatsApp will open to send it to 920003198.",
     },
     testimonialsContact: {
       kicker: "Testimonials & Contact",
@@ -934,7 +934,7 @@ export const content = {
         "Email address",
         "Our address",
         "Contact form",
-        "WhatsApp: +966 12 542 6662",
+        "WhatsApp: 920003198",
       ],
       form: {
         name: "Name",
