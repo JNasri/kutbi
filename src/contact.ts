@@ -1,3 +1,4 @@
-export const whatsappNumber = '966920003198';
-export const whatsappDisplayNumber = '920003198';
+export const whatsappNumber = '966125426662';
+export const whatsappDisplayNumber = '+966 12 542 6662';
 export const whatsappUrl = `https://wa.me/${whatsappNumber}`;
+export const unifiedNumber = '920003198';

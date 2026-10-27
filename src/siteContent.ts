@@ -426,7 +426,7 @@ export const content = {
       submit: "أرسل طلبك — سنتواصل معك فوراً",
       note: "رحلة عمرة على مقاسك — أنت تختار، ونحن ننفّذ.",
       ready:
-        "تم تجهيز طلبك. سيتم فتح واتساب لإرسال الطلب إلى 920003198.",
+        "تم تجهيز طلبك. سيتم فتح واتساب لإرسال الطلب إلى +966 12 542 6662.",
     },
     testimonialsContact: {
       kicker: "آراء العملاء وقنوات التواصل",
@@ -450,7 +450,7 @@ export const content = {
         "البريد الإلكتروني",
         "العنوان",
         "نموذج التواصل",
-        "واتساب: 920003198",
+        "واتساب: +966 12 542 6662",
       ],
       form: {
         name: "الاسم",
@@ -466,6 +466,7 @@ export const content = {
       statement: "رحلتك إلى المملكة، نصنعها بعناية.",
       explore: "استكشف",
       contact: "تواصل",
+      unifiedNumber: "الرقم الموحد",
       email: "info@alkutbigroup.com",
       location: "المملكة العربية السعودية",
       rights: "جميع الحقوق محفوظة.",
@@ -910,7 +911,7 @@ export const content = {
       submit: "Send Your Request — We'll Be in Touch Immediately",
       note: "A tailor-made Umrah experience — you choose, we deliver.",
       ready:
-        "Your request is ready. WhatsApp will open to send it to 920003198.",
+        "Your request is ready. WhatsApp will open to send it to +966 12 542 6662.",
     },
     testimonialsContact: {
       kicker: "Testimonials & Contact",
@@ -934,7 +935,7 @@ export const content = {
         "Email address",
         "Our address",
         "Contact form",
-        "WhatsApp: 920003198",
+        "WhatsApp: +966 12 542 6662",
       ],
       form: {
         name: "Name",
@@ -950,6 +951,7 @@ export const content = {
       statement: "Your journey to Saudi, designed with care.",
       explore: "Explore",
       contact: "Contact",
+      unifiedNumber: "Unified Number",
       email: "info@alkutbigroup.com",
       location: "Kingdom of Saudi Arabia",
       rights: "All rights reserved.",
