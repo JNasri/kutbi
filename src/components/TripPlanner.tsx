@@ -17,7 +17,7 @@ type TripStep = {
   placeholder?: string;
   options?: readonly string[];
 };
-type PackageCopy = {
+export type PackageCopy = {
   image: string;
   id: string;
   name: string;
@@ -29,6 +29,7 @@ type PackageCopy = {
   features: readonly string[];
   cta: string;
   featured?: boolean;
+  details?: readonly { label: string; value: string }[];
 };
 type ExtraDestinationGroup = {
   id: string;
@@ -109,11 +110,13 @@ export default function TripPlanner({
   transport,
   mode,
   onModeChange,
+  packages,
 }: {
   copy: PlannerCopy;
   transport: TransportCopy;
   mode: PlannerMode;
   onModeChange: (mode: PlannerMode) => void;
+  packages?: readonly PackageCopy[];
 }) {
   const [values, setValues] = useState<FormValues>({});
   const [extraDestinations, setExtraDestinations] = useState<Set<string>>(
@@ -295,7 +298,7 @@ export default function TripPlanner({
           role="tabpanel"
         >
           <div className="package-grid">
-            {copy.packages.map((packageItem) => (
+            {(packages ?? copy.packages).map((packageItem) => (
               <article
                 className={`package-card ${packageItem.featured ? "featured" : ""} ${selectedPackage === packageItem.id ? "selected" : ""}`}
                 key={packageItem.id}
@@ -310,6 +313,7 @@ export default function TripPlanner({
                   decoding="async"
                 />
                 <div className="package-card-details">
+                <div className="package-card-heading"><h3>{packageItem.name}</h3>{packageItem.label ? <p>{packageItem.label}</p> : null}</div>
                 <strong
                   className="package-price"
                   aria-label={`${packageItem.pricePrefix} ${packageItem.price} ${packageItem.priceLabel}`}
@@ -538,14 +542,10 @@ export default function TripPlanner({
                     <section>
                       <h4>{copy.packageModal.details}</h4>
                       <dl>
-                        {copy.packageModal.detailLabels.map((label, index) => (
-                          <div key={label}>
-                            <dt>{label}</dt>
-                            <dd>
-                              {copy.packageModal.detailValues[
-                                activePackage.id
-                              ]?.[index] ?? "—"}
-                            </dd>
+                        {(activePackage.details ?? copy.packageModal.detailLabels.map((label, index) => ({ label, value: copy.packageModal.detailValues[activePackage.id]?.[index] ?? '—' }))).map((detail, index) => (
+                          <div key={index}>
+                            <dt>{detail.label}</dt>
+                            <dd>{detail.value}</dd>
                           </div>
                         ))}
                       </dl>

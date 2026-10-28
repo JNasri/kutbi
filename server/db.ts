@@ -1,5 +1,6 @@
 import pg from 'pg';
 import bcrypt from 'bcryptjs';
+import { initializeCatalog } from './catalogDatabase.js';
 
 const { Pool } = pg;
 
@@ -50,6 +51,8 @@ export async function initializeDatabase() {
     CREATE INDEX IF NOT EXISTS blog_posts_status_published_idx
       ON blog_posts (status, published_at DESC);
   `);
+
+  await initializeCatalog(pool);
 
   const username = process.env.ADMIN_USERNAME;
   const password = process.env.ADMIN_PASSWORD;

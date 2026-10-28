@@ -17,6 +17,7 @@ import passport, { requireAdmin } from "./auth.js";
 import { initializeDatabase, pool } from "./db.js";
 import { blogSchema, loginSchema } from "./validation.js";
 import { deleteFileFromS3, uploadFilesToS3 } from "./scripts/uploadFileToS3.js";
+import { createCatalogRouter } from './catalog.js';
 
 const app = express();
 const port = Number(process.env.PORT ?? 3001);
@@ -497,6 +498,8 @@ app.delete(
     }
   },
 );
+app.use('/api', createCatalogRouter(pool));
+
 if (isProduction) {
   const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
   const distPath = path.resolve(currentDirectory, "..", "dist");

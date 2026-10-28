@@ -6,18 +6,18 @@ import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
 import type { PlannerMode } from './components/TripPlanner';
 import { preloadHeroPosts, preloadPublishedPosts } from './lib/blogs';
+import LoadingScreen from './components/LoadingScreen';
 
 const Hero = lazy(() => import('./components/Hero'));
 const AboutUs = lazy(() => import('./components/AboutUs'));
 const Services = lazy(() => import('./components/Services'));
 const UmrahVisa = lazy(() => import('./components/UmrahVisa'));
-const TripPlanner = lazy(() => import('./components/TripPlanner'));
 const Transport = lazy(() => import('./components/Transport'));
-const SeasonalOffers = lazy(() => import('./components/SeasonalOffers'));
-const DiscoverSaudi = lazy(() => import('./components/DiscoverSaudi'));
+const TripsPage = lazy(() => import('./pages/TripsPage'));
 const TestimonialsContact = lazy(() => import('./components/TestimonialsContact'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const DashboardPage = lazy(() => import('./pages/DashboardPage'));
+const AdminLayout = lazy(() => import('./components/AdminLayout'));
 const JournalPage = lazy(() => import('./pages/JournalPage'));
 const JournalArticlePage = lazy(() => import('./pages/JournalArticlePage'));
 
@@ -91,7 +91,7 @@ function MarketingSite() {
         <Routes>
           <Route index element={<div className="routed-page home-page"><Hero copy={copy.hero} language={language} onSelectPlannerMode={changePlannerMode} /><AboutUs copy={copy.about} /></div>} />
           <Route path="services" element={<div className="routed-page"><Services copy={copy.services} theme={theme} /><UmrahVisa copy={copy.visa} /><Transport copy={copy.transport} /></div>} />
-          <Route path="trips" element={<div className="routed-page"><TripPlanner key={`planner-${language}`} copy={copy.planner} transport={copy.transport} mode={plannerMode} onModeChange={changePlannerMode} /><SeasonalOffers copy={copy.offers} /><DiscoverSaudi key={`discover-${language}`} copy={copy.discover} /></div>} />
+          <Route path="trips" element={<TripsPage language={language} mode={plannerMode} onModeChange={changePlannerMode} />} />
           <Route path="contact" element={<div className="routed-page"><TestimonialsContact copy={copy.testimonialsContact} /></div>} />
           <Route path="journal" element={<JournalPage language={language} />} />
           <Route path="journal/:slug" element={<JournalArticlePage language={language} />} />
@@ -109,11 +109,16 @@ function MarketingSite() {
 }
 
 export default function App() {
+  const location = useLocation();
+  const adminRoute = ['/login', '/dashboard', '/dashborad'].includes(location.pathname);
+  const loadingLabel = adminRoute && localStorage.getItem('alkutbi-admin-language') === 'ar' ? 'جارٍ التحميل…' : 'Loading…';
   return (
-    <Suspense fallback={<div className="route-loader">Loading…</div>}>
+    <Suspense fallback={<LoadingScreen dark={adminRoute} label={loadingLabel} />}>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route element={<AdminLayout />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+        </Route>
         <Route path="/dashborad" element={<Navigate to="/dashboard" replace />} />
         <Route path="/*" element={<MarketingSite />} />
       </Routes>
