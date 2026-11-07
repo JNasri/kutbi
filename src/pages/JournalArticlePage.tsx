@@ -1,3 +1,5 @@
+import LoadingScreen from '../components/LoadingScreen';
+import ImageReadyPage from '../components/ImageReadyPage';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import { apiRequest } from '../lib/api';
@@ -57,13 +59,13 @@ export default function JournalArticlePage({ language }: { language: Language })
     if (title) document.title = `${title} | ${copy.journal}`;
   }, [copy.journal, title]);
 
-  if (loading) return <section className="journal-article routed-page"><div className="journal-article-loading" aria-label="Loading" /></section>;
+  if (loading) return <LoadingScreen label={language === 'ar' ? 'جارٍ التحميل…' : 'Loading…'} />;
   if (!post) return <section className="journal-article routed-page"><div className="journal-not-found content-wrap"><p>{copy.error}</p><Link to="/journal">{copy.back}</Link></div></section>;
 
   const publishedDate = post.published_at ?? post.created_at;
 
   return (
-    <article className="journal-article routed-page">
+    <ImageReadyPage key={slug} language={language}><article className="journal-article routed-page">
       <header className="article-intro">
         <div className="article-intro-grid content-wrap">
           <div className="article-heading">
@@ -96,6 +98,6 @@ export default function JournalArticlePage({ language }: { language: Language })
       ) : null}
 
       <footer className="article-back content-wrap"><Link to="/journal"><span aria-hidden="true">←</span>{copy.back}</Link></footer>
-    </article>
+    </article></ImageReadyPage>
   );
 }

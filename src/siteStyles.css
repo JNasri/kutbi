@@ -5694,3 +5694,8 @@ body {
 .package-card-heading p { margin: 0 0 1.2rem; color: var(--muted); font-size: .8rem; line-height: 1.8; }
 .loading-screen-dark { background: #0e1c18; color: #edf5ef; }
 .loading-screen-dark .loading-spinner { border-color: #304a3d; border-top-color: #b2d4af; }
+
+.image-ready-page { position: relative; }
+.image-ready-page.is-pending { overflow: clip; }
+.image-ready-pending { position: absolute; inset-inline: 0; top: 0; visibility: hidden; pointer-events: none; }
+.image-ready-error { min-height: 65svh; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 20px; padding: 32px; text-align: center; color: var(--text); }

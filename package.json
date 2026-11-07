@@ -11,7 +11,10 @@
     "preview": "vite preview",
     "start": "cross-env NODE_ENV=production tsx server/index.ts",
     "db:init": "tsx server/scripts/initDb.ts",
-    "admin:reset-password": "tsx server/scripts/resetAdminPassword.ts"
+    "admin:reset-password": "tsx server/scripts/resetAdminPassword.ts",
+    "images:optimize-bucket": "tsx server/scripts/optimizeBucketImages.ts",
+    "images:optimize-bucket:apply": "tsx server/scripts/optimizeBucketImages.ts --apply",
+    "test:images": "tsx --test server/imageOptimization.test.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1121.0",
@@ -33,6 +36,7 @@
     "react-dom": "^19.2.3",
     "react-icons": "^5.7.0",
     "react-router": "^7.18.1",
+    "sharp": "^0.35.5",
     "typescript": "~5.8.2",
     "vite": "^6.2.0",
     "zod": "^4.4.3"

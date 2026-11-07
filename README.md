@@ -67,3 +67,12 @@ Backend startup creates the catalog tables and imports the existing four package
 ## Project status
 
 **Actively being developed.** I'm continuing to refine the design, improve performance, and expand the website as the company's needs grow.
+# Image optimization
+
+Admin image uploads are automatically encoded as WebP at quality 85 with full-quality alpha, preserving display dimensions and applying camera orientation. Inputs above 40 million pixels are rejected to bound processing memory. Install dependencies on the deployment platform (`npm ci`) so Sharp's native package matches the server OS; do not copy Windows node_modules to production.
+
+Run `npm run test:images` to verify formats, dimensions, transparency, orientation, input limits and S3 upload metadata/cleanup.
+
+For existing bucket images, `npm run images:optimize-bucket` performs a dry run using the configured database and storage. `npm run images:optimize-bucket:apply` uploads smaller WebP copies, verifies their stored bytes and public HTTP delivery, and updates journal/gallery/catalog URLs transactionally. It only processes the configured S3 prefix, retains original objects, skips invalid files or conversions without size savings, and saves a database snapshot and URL mapping in a timestamped directory under the OS temporary directory. Concurrent content edits abort database changes rather than overwriting edits. Keep the report for recovery. Existing WebP objects are skipped on subsequent runs.
+
+For Cloudflare R2 delivery, connect an image subdomain to the bucket under R2 Settings → Custom Domains, then configure `S3_PUBLIC_BASE_URL` to that public HTTPS base. This affects future upload URLs; existing database URLs need migration separately. Do not use an S3 API endpoint as the public base URL. Keep admin/API responses outside any blanket cache rule.

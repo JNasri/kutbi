@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { DeleteObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
 import { storage, storageConfig } from '../storage.js';
+import { optimizeImage } from '../imageOptimization.js';
 
 const imageExtensions = new Map([
   ['image/jpeg', '.jpg'],
@@ -9,12 +10,12 @@ const imageExtensions = new Map([
   ['image/avif', '.avif'],
 ]);
 
-function createPublicUrl(key: string) {
+export function createPublicUrl(key: string) {
   const encodedKey = key.split('/').map(encodeURIComponent).join('/');
   return `${storageConfig.publicBaseUrl}/${encodedKey}`;
 }
 
-function objectKeyFromPublicUrl(value: string) {
+export function objectKeyFromPublicUrl(value: string) {
   try {
     const fileUrl = new URL(value);
     const publicUrl = new URL(`${storageConfig.publicBaseUrl}/`);
@@ -37,12 +38,13 @@ export async function uploadFileToS3(file: Express.Multer.File) {
   const extension = imageExtensions.get(file.mimetype);
   if (!extension) throw new Error('Unsupported journal image type.');
 
-  const key = `${storageConfig.prefix}/${Date.now()}-${randomUUID()}${extension}`;
+  const optimized = await optimizeImage(file.buffer);
+  const key = `${storageConfig.prefix}/${Date.now()}-${randomUUID()}.webp`;
   await storage.send(new PutObjectCommand({
     Bucket: storageConfig.bucket,
     Key: key,
-    Body: file.buffer,
-    ContentType: file.mimetype,
+    Body: optimized,
+    ContentType: 'image/webp',
     CacheControl: 'public, max-age=31536000, immutable',
   }));
 

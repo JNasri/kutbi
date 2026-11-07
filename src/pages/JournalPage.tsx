@@ -1,3 +1,5 @@
+import LoadingScreen from '../components/LoadingScreen';
+import ImageReadyPage from '../components/ImageReadyPage';
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { getPublishedPosts } from "../lib/blogs";
@@ -54,8 +56,10 @@ export default function JournalPage({ language }: { language: Language }) {
   const title = (post: BlogSummary) => language === "ar" ? post.title_ar : post.title_en;
   const excerpt = (post: BlogSummary) => language === "ar" ? post.excerpt_ar : post.excerpt_en;
 
+  if (loading) return <LoadingScreen label={language === 'ar' ? 'جارٍ التحميل…' : 'Loading…'} />;
+
   return (
-    <section className="journal-page routed-page">
+    <ImageReadyPage language={language}><section className="journal-page routed-page">
       <header className="journal-masthead content-wrap">
         <div><p>{copy.kicker}</p><h1>{copy.title}</h1></div>
         <div className="journal-masthead-copy">
@@ -64,7 +68,6 @@ export default function JournalPage({ language }: { language: Language }) {
         </div>
       </header>
 
-      {loading ? <div className="journal-state content-wrap" aria-label="Loading"><i /><i /><i /><i /></div> : null}
       {!loading && failed ? <p className="journal-message content-wrap" role="alert">{copy.error}</p> : null}
       {!loading && !failed && posts.length === 0 ? <p className="journal-message content-wrap">{copy.empty}</p> : null}
 
@@ -88,6 +91,6 @@ export default function JournalPage({ language }: { language: Language }) {
           })}
         </div>
       ) : null}
-    </section>
+    </section></ImageReadyPage>
   );
 }

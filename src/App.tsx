@@ -7,6 +7,7 @@ import WhatsAppButton from './components/WhatsAppButton';
 import type { PlannerMode } from './components/TripPlanner';
 import { preloadHeroPosts, preloadPublishedPosts } from './lib/blogs';
 import LoadingScreen from './components/LoadingScreen';
+import ImageReadyPage from './components/ImageReadyPage';
 
 const Hero = lazy(() => import('./components/Hero'));
 const AboutUs = lazy(() => import('./components/AboutUs'));
@@ -90,7 +91,7 @@ function MarketingSite() {
       <main>
         <Routes>
           <Route index element={<div className="routed-page home-page"><Hero copy={copy.hero} language={language} onSelectPlannerMode={changePlannerMode} /><AboutUs copy={copy.about} /></div>} />
-          <Route path="services" element={<div className="routed-page"><Services copy={copy.services} theme={theme} /><UmrahVisa copy={copy.visa} /><Transport copy={copy.transport} /></div>} />
+          <Route path="services" element={<ImageReadyPage key={theme} language={language}><div className="routed-page"><Services copy={copy.services} theme={theme} /><UmrahVisa copy={copy.visa} /><Transport copy={copy.transport} /></div></ImageReadyPage>} />
           <Route path="trips" element={<TripsPage language={language} mode={plannerMode} onModeChange={changePlannerMode} />} />
           <Route path="contact" element={<div className="routed-page"><TestimonialsContact copy={copy.testimonialsContact} /></div>} />
           <Route path="journal" element={<JournalPage language={language} />} />
