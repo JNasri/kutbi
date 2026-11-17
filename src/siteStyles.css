@@ -307,8 +307,13 @@ a {
 }
 .hero-image {
   z-index: -4;
-  background: url("/images/hero-city.png") center/cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity .25s ease;
 }
+.hero-image.is-loaded { opacity: 1; }
 .scene-shade {
   z-index: -3;
   background: linear-gradient(
@@ -1786,7 +1791,7 @@ a {
   min-height: 100svh;
   background:
     linear-gradient(180deg, rgba(2, 20, 10, 0.22), rgba(2, 20, 10, 0.78)),
-    url("/images/hero-city.png") center/cover;
+    url("/images/hero-city.webp") center/cover;
 }
 .login-art > div {
   position: absolute;
@@ -3405,7 +3410,7 @@ a {
   color: #123525;
   background: #eee5d5;
 }
-:root:not([data-theme="dark"]) .hero-image {
+:root:not([data-theme="dark"]) .hero-image.is-loaded {
   opacity: 0.48;
 }
 :root:not([data-theme="dark"]) .scene-shade {

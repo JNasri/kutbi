@@ -503,7 +503,15 @@ app.use('/api', createCatalogRouter(pool));
 if (isProduction) {
   const currentDirectory = path.dirname(fileURLToPath(import.meta.url));
   const distPath = path.resolve(currentDirectory, "..", "dist");
-  app.use(express.static(distPath));
+  app.use(express.static(distPath, {
+    setHeaders(response, filePath) {
+      if (filePath.startsWith(path.join(distPath, 'assets') + path.sep)) {
+        response.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+      } else if (filePath.startsWith(path.join(distPath, 'images') + path.sep)) {
+        response.setHeader('Cache-Control', 'public, max-age=86400');
+      }
+    },
+  }));
   app.get(/.*/, (_request, response) =>
     response.sendFile(path.join(distPath, "index.html")),
   );

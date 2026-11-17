@@ -3,6 +3,8 @@ import BlogCarousel from "./BlogCarousel";
 import type { Language } from "../siteContent";
 import type { PlannerMode } from "./TripPlanner";
 import { Link } from "react-router";
+import { useEffect, useState } from 'react';
+import { warmSite } from '../lib/warmSite';
 
 type HeroCopy = {
   eyebrow: string;
@@ -22,9 +24,20 @@ export default function Hero({
   language: Language;
   onSelectPlannerMode: (mode: PlannerMode) => void;
 }) {
+  const [backgroundReady, setBackgroundReady] = useState(false);
+  useEffect(() => {
+    if (backgroundReady) return warmSite();
+  }, [backgroundReady]);
   return (
     <section id="home" className="hero scene" aria-labelledby="hero-title">
-      <div className="scene-image hero-image" />
+      <img className={`scene-image hero-image${backgroundReady ? ' is-loaded' : ''}`}
+        src="/images/hero-city.webp"
+        srcSet="/images/hero-city-960.webp 960w, /images/hero-city.webp 1983w"
+        sizes="100vw" width="1983" height="793" alt="" aria-hidden="true"
+        fetchPriority="high" decoding="async"
+        onLoad={async (event) => {
+          try { await event.currentTarget.decode(); setBackgroundReady(true); } catch { /* Keep the solid background if decoding fails. */ }
+        }} />
       <div className="scene-shade" />
       <div className="grain" />
       <div className="hero-emblem">

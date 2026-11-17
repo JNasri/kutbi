@@ -1,0 +1,1 @@
+import{h as n}from"./index-Ct8tZXKg.js";let e,t;function r(){return e&&Date.now()-e.at<3e4?Promise.resolve(e.value):(t??(t=n("/api/catalog").then(a=>(e={value:a,at:Date.now()},a)).finally(()=>{t=void 0})),t)}export{r as g};

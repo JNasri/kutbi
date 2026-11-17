@@ -89,6 +89,7 @@ function MarketingSite() {
     <div className="page-shell">
       <Header language={language} setLanguage={setLanguage} theme={theme} setTheme={setTheme} copy={copy} />
       <main>
+        <Suspense key={location.pathname} fallback={<LoadingScreen label={language === 'ar' ? 'جارٍ التحميل…' : 'Loading…'} />}>
         <Routes>
           <Route index element={<div className="routed-page home-page"><Hero copy={copy.hero} language={language} onSelectPlannerMode={changePlannerMode} /><AboutUs copy={copy.about} /></div>} />
           <Route path="services" element={<ImageReadyPage key={theme} language={language}><div className="routed-page"><Services copy={copy.services} theme={theme} /><UmrahVisa copy={copy.visa} /><Transport copy={copy.transport} /></div></ImageReadyPage>} />
@@ -102,6 +103,7 @@ function MarketingSite() {
           <Route path="discover" element={<Navigate to="/trips#discover" replace />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        </Suspense>
       </main>
       <WhatsAppButton label={copy.whatsapp} />
       <Footer copy={copy.footer} nav={copy.nav} brand={copy.brand} />

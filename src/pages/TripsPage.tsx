@@ -4,7 +4,7 @@ import SeasonalOffers from '../components/SeasonalOffers';
 import DiscoverSaudi from '../components/DiscoverSaudi';
 import LoadingScreen from '../components/LoadingScreen';
 import ImageReadyPage from '../components/ImageReadyPage';
-import { apiRequest } from '../lib/api';
+import { getPublicCatalog } from '../lib/catalog';
 import { content, type Language } from '../siteContent';
 import type { PublicCatalog } from '../../shared/catalog';
 
@@ -16,7 +16,7 @@ export default function TripsPage({ language, mode, onModeChange }: { language: 
   useEffect(() => {
     let active = true;
     setFailed(false);
-    apiRequest<PublicCatalog>('/api/catalog').then((value) => { if (active) setCatalog(value); }).catch(() => { if (active) setFailed(true); });
+    getPublicCatalog().then((value) => { if (active) setCatalog(value); }).catch(() => { if (active) setFailed(true); });
     return () => { active = false; };
   }, [attempt]);
   if (failed) return <div className="catalog-public-error routed-page" role="alert"><p>{language === 'ar' ? 'تعذّر تحميل الباقات والعروض.' : 'Packages and offers could not be loaded.'}</p><button className="button button-gold" onClick={() => setAttempt((value) => value + 1)}>{language === 'ar' ? 'إعادة المحاولة' : 'Try again'}</button></div>;

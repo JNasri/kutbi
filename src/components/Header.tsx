@@ -4,6 +4,7 @@ import { LuLockKeyhole } from 'react-icons/lu';
 import type { Language } from '../siteContent';
 import Logo from './Logo';
 import { Link, NavLink, useLocation } from 'react-router';
+import { preloadRoute } from '../lib/preloadRoute';
 
 export type Theme = 'light' | 'dark';
 
@@ -76,7 +77,7 @@ export default function Header({ language, setLanguage, theme, setTheme, copy }:
         </div>
         <nav>
           {copy.nav.map((item, index) => (
-            <NavLink key={item.href} to={item.href} end={item.href === '/'} onClick={() => setOpen(false)}>
+            <NavLink key={item.href} to={item.href} end={item.href === '/'} onPointerEnter={() => preloadRoute(item.href)} onFocus={() => preloadRoute(item.href)} onClick={() => setOpen(false)}>
               <small>0{index + 1}</small><span>{item.label}</span><b>↗</b>
             </NavLink>
           ))}
@@ -99,7 +100,7 @@ export default function Header({ language, setLanguage, theme, setTheme, copy }:
       </Link>
 
       <nav className="desktop-nav" aria-label={copy.menu}>
-        {copy.nav.map((item) => <NavLink key={item.href} to={item.href} end={item.href === '/'}>{item.label}</NavLink>)}
+        {copy.nav.map((item) => <NavLink key={item.href} to={item.href} end={item.href === '/'} onPointerEnter={() => preloadRoute(item.href)} onFocus={() => preloadRoute(item.href)}>{item.label}</NavLink>)}
       </nav>
 
       <div className="header-actions">
